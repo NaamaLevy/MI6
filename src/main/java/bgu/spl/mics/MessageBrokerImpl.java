@@ -48,7 +48,9 @@ public class MessageBrokerImpl implements MessageBroker {
 	public <T> void subscribeEvent(Class<? extends Event<T>> type, Subscriber s) {
 		if (MessagesQueuesMap.containsKey(type))
 			MessagesQueuesMap.get(type);
+
 		//TODO: solve problem with the Subscribers' blocking queue
+
 		else {
 			MessagesQueuesMap.put(type, new LinkedBlockingQueue<Subscriber>());
 		}

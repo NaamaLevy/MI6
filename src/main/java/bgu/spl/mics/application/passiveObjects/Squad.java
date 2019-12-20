@@ -68,6 +68,8 @@ public class Squad {
 		for (String serial:serials){
 			Agent agentToAcquire = agents.get(serial);
 			while (!agentToAcquire.isAvailable()) {
+
+
 //TODO implement wait method
 			}
 			agentToAcquire.acquire();
