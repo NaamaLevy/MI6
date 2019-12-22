@@ -102,7 +102,7 @@ public class MessageBrokerImpl implements MessageBroker {
 			return future;
 		//sync to prevent from the relevant Subscribers to unregister themselves while the method tries to catch one of them
 		synchronized (interestedSubscribers){
-			//assert the condition for finding relevant Subscriber
+			//assert the condition for efinding relevant Subscriber
 			if (interestedSubscribers == null || interestedSubscribers.isEmpty())
 				return future;
 			//locate the first Subscriber available for the mission and remove it from the queue
