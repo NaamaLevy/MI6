@@ -2,7 +2,7 @@ package bgu.spl.mics.application.messages;
 
 import bgu.spl.mics.Event;
 
-public class AgentsAvailableEvent implements Event {
+public class AgentsAvailableEvent<Boolean> implements Event {
 
     private Boolean isAgentsAvailable;
 
@@ -11,7 +11,5 @@ public class AgentsAvailableEvent implements Event {
     }
 
     public Boolean getIsAgentsAvailable() { return isAgentsAvailable; }
-
-
 
 }

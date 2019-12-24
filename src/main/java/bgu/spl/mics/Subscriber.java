@@ -19,16 +19,16 @@ import java.util.Map;
  * <p>
  */
 public abstract class Subscriber extends RunnableSubPub {
-    private boolean terminated = false;
-    Map<Class<? extends Message>,Callback> actlikethis = new HashMap<>();
+    private boolean hasTerminated = false;
+    private Map<Class<? extends Message>,Callback> typeAndItsCallbackMap = new HashMap<>();
+    private final MessageBroker messageBrokerInstance = MessageBrokerImpl.getInstance();
+    //    private final CountDownLatch printLatch;   //QQQ what does it do?
 
     /**
      * @param name the Subscriber name (used mainly for debugging purposes -
      *             does not have to be unique)
      */
-    public Subscriber(String name) {
-        super(name);
-    }
+    public Subscriber(String name) { super(name); }
 
     /**
      * Subscribes to events of type {@code type} with the callback
@@ -52,7 +52,8 @@ public abstract class Subscriber extends RunnableSubPub {
      *                 queue.
      */
     protected final <T, E extends Event<T>> void subscribeEvent(Class<E> type, Callback<E> callback) {
-        actlikethis.put(type,callback);
+        messageBrokerInstance.subscribeEvent(type, this); // sends to the messageBroker the type to subscribe to, and itself as this type's subscriber
+        typeAndItsCallbackMap.put(type,callback);
     }
 
     /**
@@ -76,7 +77,8 @@ public abstract class Subscriber extends RunnableSubPub {
      *                 queue.
      */
     protected final <B extends Broadcast> void subscribeBroadcast(Class<B> type, Callback<B> callback) {
-        //TODO: implement this.
+        messageBrokerInstance.subscribeBroadcast(type, this); // sends to messageBroker type to subscribe to, and itself as this type's subscriber
+        typeAndItsCallbackMap.put(type, callback);
     }
 
     /**
@@ -90,7 +92,7 @@ public abstract class Subscriber extends RunnableSubPub {
      *               {@code e}.
      */
     protected final <T> void complete(Event<T> e, T result) {
-        //TODO: implement this.
+        messageBrokerInstance.complete(e, result);
     }
 
     /**
@@ -98,7 +100,7 @@ public abstract class Subscriber extends RunnableSubPub {
      * message.
      */
     protected final void terminate() {
-        this.terminated = true;
+        this.hasTerminated = true;
     }
 
     /**
@@ -107,11 +109,20 @@ public abstract class Subscriber extends RunnableSubPub {
      */
     @Override
     public final void run() {
-
+        messageBrokerInstance.register(this); // registers s and builds its message queue
         initialize();
-        while (!terminated) {
-            System.out.println("NOT IMPLEMENTED!!!"); //TODO: you should delete this line :)
+        while (!hasTerminated) {
+            try {
+                Message messageToProcess = messageBrokerInstance.awaitMessage(this); //takes message from s messages' queue
+                if (messageToProcess != null)
+                    typeAndItsCallbackMap.get(messageToProcess.getClass()).call(messageToProcess);
+            } catch (InterruptedException exp) {
+                exp.printStackTrace();
+            }
         }
+        messageBrokerInstance.unregister(this);
+     /*   if (printLatch != null)  ///QQQ what exactly does it do...?
+            printLatch.countDown();*/
     }
 
 }
