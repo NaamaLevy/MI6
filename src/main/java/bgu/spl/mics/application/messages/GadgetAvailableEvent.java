@@ -5,13 +5,18 @@ public class GadgetAvailableEvent<Boolean> implements Event {
 
     private Boolean isGadgetAvailable;
 
-    public GadgetAvailableEvent(Boolean isGadgetAvailable) {
-        this.isGadgetAvailable = isGadgetAvailable;
+
+
+    private String gadgetName;
+
+    public GadgetAvailableEvent(String gadgetName) {
+        this.isGadgetAvailable = null;
+        this.gadgetName = gadgetName;
     }
 
     public Boolean getIsGadgetAvailable() {
         return isGadgetAvailable;
     }
 
-
+    public String getGadgetName() { return gadgetName; }
 }
