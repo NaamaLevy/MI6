@@ -14,7 +14,7 @@ public class Future<T> {
 
 	//	**************fields*****************
 	private boolean isResolved;
-	private T result;  //ADDED
+	private T result;
 	private final Object lock = new Object();
 
 	/**

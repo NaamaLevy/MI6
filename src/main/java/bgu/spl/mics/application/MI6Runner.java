@@ -48,6 +48,7 @@ public class MI6Runner {
         //creates services objects
         for( int i = 0; i < InputData.getServices().getM(); i++){
             M m = new M(Integer.toString(i));
+
             //TODO: push new M's to DataStructure
         }
         for( int i = 0; i < InputData.getServices().getMoneypenny(); i++) {
