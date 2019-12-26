@@ -21,8 +21,8 @@ public class MessageBrokerImpl implements MessageBroker {
 	private ConcurrentHashMap <Class<? extends Message>, Queue<Subscriber>>MessageAndItsSubscribersQueueMap; //holds messages and subscribed subscribers queue
 	private ConcurrentHashMap  <Subscriber, BlockingQueue<Message>> SubscriberAndItsMessagesQueueMap; // holds subscribers and their messages queue
 	private ConcurrentHashMap<Event, Future> eventFutureMap; // holds Events and their Future
-	Object lock;
-	//   private final Object lock;  // QQQ need to understand what it does
+	private final Object lock;
+
 
 
 

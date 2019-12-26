@@ -13,11 +13,14 @@ public class Moneypenny extends Subscriber {
 
 	public Moneypenny(String name) {
 		super(name);
-		// TODO Implement this
+
+
+
 	}
 
 	@Override
 	protected void initialize() {
+
 
 	}
 

@@ -14,19 +14,23 @@ import bgu.spl.mics.application.passiveObjects.Inventory;
  */
 public class Q extends Subscriber {
 
+	private int time;
+
 	public Q() {
 		super("instanceOfQ");
-		//
+		this.time = -1;
+
+
 
 	}
 
 	@Override
 	protected void initialize() {
-
-		//QQQshould we subscribe to time
+		subscribeBroadcast(TickBroadcast.class, (TickBroadcast tick) -> time = tick.getTick());
 		subscribeEvent(GadgetAvailableEvent.class, (GadgetAvailableEvent gadgetAvailableEvent )->{
-			String askedGadget = gadgetAvailableEvent.getGadgetName();
-			complete(gadgetAvailableEvent, Inventory.getInstance().getItem(askedGadget)); // return to "complete" the availability of askedGadget
+			String askedGadget = gadgetAvailableEvent.getGadgetName(); //takes the value of the needed gadget
+			gadgetAvailableEvent.setTime(time);
+			complete(gadgetAvailableEvent, Inventory.getInstance().getItem(askedGadget)); // return, using complete, the availability of askedGadget
 
 
 
