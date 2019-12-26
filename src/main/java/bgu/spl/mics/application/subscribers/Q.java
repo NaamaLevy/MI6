@@ -4,6 +4,8 @@ import bgu.spl.mics.Callback;
 import bgu.spl.mics.Subscriber;
 import bgu.spl.mics.application.messages.AgentsAvailableEvent;
 import bgu.spl.mics.application.messages.GadgetAvailableEvent;
+import bgu.spl.mics.application.messages.TerminateBroadCast;
+import bgu.spl.mics.application.messages.TickBroadcast;
 import bgu.spl.mics.application.passiveObjects.Inventory;
 
 /**
@@ -26,14 +28,15 @@ public class Q extends Subscriber {
 
 	@Override
 	protected void initialize() {
+		//subscribe Q to terminate BroadCast
+		subscribeBroadcast(TerminateBroadCast.class,(TerminateBroadCast terBC) -> terminate());
+		//subscribe Q to Tick BroadCast
 		subscribeBroadcast(TickBroadcast.class, (TickBroadcast tick) -> time = tick.getTick());
+		//subscribe Q to GadgetAvailableEvent BroadCast
 		subscribeEvent(GadgetAvailableEvent.class, (GadgetAvailableEvent gadgetAvailableEvent )->{
 			String askedGadget = gadgetAvailableEvent.getGadgetName(); //takes the value of the needed gadget
 			gadgetAvailableEvent.setTime(time);
 			complete(gadgetAvailableEvent, Inventory.getInstance().getItem(askedGadget)); // return, using complete, the availability of askedGadget
-
-
-
 		});
 	}
 
