@@ -39,8 +39,10 @@ public class Squad {
 	 */
 	public void releaseAgents(List<String> serials) {
 		for (String serial:serials)
-			if (agents.get(serial) != null)
+			if (agents.get(serial) != null) {
 				agents.get(serial).release();
+				agents.get(serial).notify();
+			}
 	}
 
 	/**
@@ -67,12 +69,16 @@ public class Squad {
 		}
 		for (String serial:serials){
 			Agent agentToAcquire = agents.get(serial);
-			while (!agentToAcquire.isAvailable()) {
-
-
-//TODO implement wait method
+			synchronized (agentToAcquire){
+				while (!agentToAcquire.isAvailable()) {
+					try{
+						agentToAcquire.wait();
+					}catch (InterruptedException e){
+						e.printStackTrace();
+					}
+				}
+				agentToAcquire.acquire();
 			}
-			agentToAcquire.acquire();
 		}
 		return true;
 	}

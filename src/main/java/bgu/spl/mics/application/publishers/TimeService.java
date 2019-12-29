@@ -1,11 +1,16 @@
 package bgu.spl.mics.application.publishers;
 
 import bgu.spl.mics.Publisher;
+import bgu.spl.mics.application.messages.TerminateBroadCast;
+import bgu.spl.mics.application.messages.TickBroadcast;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * TimeService is the global system timer There is only one instance of this Publisher.
  * It keeps track of the amount of ticks passed since initialization and notifies
- * all other subscribers about the current time tick using {@link Tick Broadcast}.
+ * all other subscribers about the current time tick using {@link TickBroadcast}.
  * This class may not hold references for objects which it is not responsible for.
  * 
  * You can add private fields and public methods to this class.
@@ -21,7 +26,26 @@ public class TimeService extends Publisher {
 
 	@Override
 	protected void initialize() {
-		// TODO Implement this
+
+		/*sends:
+		1. TickBroadcast (to APIService)
+		2. TerminateBroadcast (to everyone)
+		 * */
+
+//		Timer timer = new Timer();
+//		TimerTask task = new TimerTask() {
+//			@Override
+//			public void run() {
+//				if (timeDuration > currTick) {
+//					sendBroadcast(new TickBroadcast(currTick));
+//					currTick++;
+//				} else {
+//					sendBroadcast(new TerminateBroadCast());
+//					timer.cancel();
+//				}
+//			}
+//		};
+//		timer.scheduleAtFixedRate(task,100,speed);
 
 	}
 
