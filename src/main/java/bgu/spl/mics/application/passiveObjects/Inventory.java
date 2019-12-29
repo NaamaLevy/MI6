@@ -16,12 +16,12 @@ import java.util.List;
  */
 public class Inventory {
     private List<String> gadgets;
-
+    private final Object lock = new Object();
 
     // creating a singleton
     private static class SingletonHolder {
         private static Inventory inventory = new Inventory();
-        private final Object lock = new Object();
+
     }
 
     /**

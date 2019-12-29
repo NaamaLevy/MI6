@@ -1,22 +1,64 @@
 package bgu.spl.mics.application.messages;
 
 import bgu.spl.mics.Event;
+import bgu.spl.mics.Future;
+import bgu.spl.mics.application.passiveObjects.Agent;
 
 import java.util.List;
 
 public class AgentsAvailableEvent<Boolean> implements Event {
 
-    private Boolean isAgentsAvailable;
 
-
+    /* private Future<Boolean> isAgentsAvailable;*/
+    private Boolean shouldSendAgents;
+    private final List<String> agentsNumbers;
     private int time;
+    private String Monneypenny;
+    private List<String> agentsName;
 
-    public AgentsAvailableEvent(List<String> agentsName) {
-        this.isAgentsAvailable = isAgentsAvailable;
+
+    private int duration;
+
+
+    public AgentsAvailableEvent(List<String> agentsNumbers, int duration) {
+
+        shouldSendAgents = null;
+        this.agentsNumbers = agentsNumbers;
+        this.duration = duration;
     }
-    public Boolean getIsAgentsAvailable() { return isAgentsAvailable; }
-    public int getTime() { return time;}
+
+    public void setShouldSendAgents(Boolean shouldSendAgents) { this.shouldSendAgents = shouldSendAgents; }
+
+    public int getTime() { return time; }
+
     public void setTime(int time) { this.time = time; }
+
+    public List<String> getAgentsNumbers() { return agentsNumbers; }
+
+    public int getDuration() { return duration; }
+
+    public void setDuration(int duration) { this.duration = duration; }
+
+    public String getMonneypenny() { return Monneypenny; }
+
+    public void setMonneypenny(String monneypenny) { Monneypenny = monneypenny; }
+    public List<String> getAgentsName() { return agentsName; }
+    public void setAgentsName(List<String> agentsName) { this.agentsName = agentsName; }
+    public boolean getShouldSendAgents() {
+        synchronized (shouldSendAgents) {
+            while (shouldSendAgents == null) {
+                try {
+                    shouldSendAgents.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            return (boolean) shouldSendAgents;
+        }
+
+
+    }
+
 
 }
 

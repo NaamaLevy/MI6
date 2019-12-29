@@ -1,6 +1,13 @@
 package bgu.spl.mics.application.subscribers;
 
+import bgu.spl.mics.Future;
 import bgu.spl.mics.Subscriber;
+import bgu.spl.mics.application.messages.AgentsAvailableEvent;
+import bgu.spl.mics.application.messages.MissionReceivedEvent;
+import bgu.spl.mics.application.messages.TerminateBroadCast;
+import bgu.spl.mics.application.messages.TickBroadcast;
+import bgu.spl.mics.application.passiveObjects.Inventory;
+import bgu.spl.mics.application.passiveObjects.Squad;
 
 /**
  * Only this type of Subscriber can access the squad.
@@ -10,18 +17,46 @@ import bgu.spl.mics.Subscriber;
  * You MAY change constructor signatures and even add new public constructors.
  */
 public class Moneypenny extends Subscriber {
+	int time;
 
 	public Moneypenny(String name) {
 		super(name);
-
-
 
 	}
 
 	@Override
 	protected void initialize() {
+		//subscribe MP to terminate BroadCast
+		subscribeBroadcast(TerminateBroadCast.class, (TerminateBroadCast terBC) -> terminate());
+		//subscribe MP to Tick BroadCast
+		subscribeBroadcast(TickBroadcast.class, (TickBroadcast tick) -> time = tick.getTick());
+		//subscribe MP to MissionReceivedEvent
+		subscribeEvent(AgentsAvailableEvent.class, (AgentsAvailableEvent agentsAvailableEvent) -> {
+			complete(agentsAvailableEvent, Squad.getInstance().getAgents(agentsAvailableEvent.getAgentsNumbers())); // return, using complete, the availability of askedAgents
+			if(agentsAvailableEvent.getShouldSendAgents()){ //waits for M to set shouldSendAgents to true
+				agentsAvailableEvent.setAgentsName(Squad.getInstance().getAgentsNames(agentsAvailableEvent.getAgentsNumbers())); //set agentsName field in the event (for the report)
+				Squad.getInstance().sendAgents(agentsAvailableEvent.getAgentsNumbers(), agentsAvailableEvent.getDuration()); //sends the agents to the mission
+			}
+			else Squad.getInstance().releaseAgents(agentsAvailableEvent.getAgentsNumbers()); //release the agents if mission was cancelled
 
+		}
 
+		);
 	}
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -33,7 +33,6 @@ public class TimeService extends Publisher {
 	@Override
 	protected void initialize() {
 
-
 		Timer timer = new Timer();
 		TimerTask task = new TimerTask() {
 			@Override

@@ -35,8 +35,8 @@ public class Q extends Subscriber {
 		//subscribe Q to GadgetAvailableEvent BroadCast
 		subscribeEvent(GadgetAvailableEvent.class, (GadgetAvailableEvent gadgetAvailableEvent )->{
 			String askedGadget = gadgetAvailableEvent.getGadgetName(); //takes the value of the needed gadget
-			gadgetAvailableEvent.setTime(time);
-			complete(gadgetAvailableEvent, Inventory.getInstance().getItem(askedGadget)); // return, using complete, the availability of askedGadget
+			if(Inventory.getInstance().getItem(askedGadget)) gadgetAvailableEvent.setTime(time); // if gadget is available, set the event's time field to current time
+			complete(gadgetAvailableEvent, gadgetAvailableEvent.getTime()); // return, using complete, the availability of askedGadget
 		});
 	}
 
