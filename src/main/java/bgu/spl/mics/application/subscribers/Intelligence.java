@@ -36,7 +36,7 @@ public class Intelligence extends Subscriber {
 		subscribeBroadcast(TickBroadcast.class, (TickBroadcast tick) -> {
 			for (MissionInfo mission: missions){
 				if (mission.getTimeIssued()==tick.getTick()){
-					MissionReceivedEvent missionReceivedEvent = new MissionReceivedEvent(mission.getMissionName(),mission.getSerialAgentsNumbers(),mission.getGadget());
+					MissionReceivedEvent missionReceivedEvent = new MissionReceivedEvent(mission.getMissionName(),mission.getSerialAgentsNumbers(),mission.getGadget(), mission.getTimeExpired(), mission.getDuration(), mission.getTimeIssued());
 					Future<Boolean> missionFuture = MB.sendEvent(missionReceivedEvent);
 				}
 			}

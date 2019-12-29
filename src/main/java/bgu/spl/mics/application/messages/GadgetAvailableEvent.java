@@ -1,7 +1,7 @@
 package bgu.spl.mics.application.messages;
 import bgu.spl.mics.Event;
 
-public class GadgetAvailableEvent<Boolean> implements Event {
+public class GadgetAvailableEvent<Integer> implements Event {
 
     private Boolean isGadgetAvailable;
     private int time;

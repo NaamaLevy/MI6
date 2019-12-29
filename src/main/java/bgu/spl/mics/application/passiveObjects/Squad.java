@@ -62,10 +62,10 @@ public class Squad {
 	 * @param serials   the serial numbers of the agents
 	 * @return ‘false’ if an agent of serialNumber ‘serial’ is missing, and ‘true’ otherwise
 	 */
-	public boolean getAgents(List<String> serials){
+	public int getAgents(List<String> serials){
 		for (String serial:serials) {
 			if (agents.get(serial) == null)
-				return false;
+				return -1;
 		}
 		for (String serial:serials){
 			Agent agentToAcquire = agents.get(serial);
@@ -80,7 +80,7 @@ public class Squad {
 				agentToAcquire.acquire();
 			}
 		}
-		return true;
+		return 1;
 	}
 
 
