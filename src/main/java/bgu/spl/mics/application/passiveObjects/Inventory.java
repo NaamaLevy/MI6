@@ -1,5 +1,7 @@
 package bgu.spl.mics.application.passiveObjects;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -76,6 +78,6 @@ public class Inventory {
      * This method is called by the main method in order to generate the output.
      */
     public void printToFile(String filename) {
-        //TODO: Implement this
+        String gson = new Gson().toJson(this);
     }
 }
