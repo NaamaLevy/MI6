@@ -112,10 +112,11 @@ public class MessageBrokerImpl implements MessageBroker {
 				if (chosenSubscriberForE != null){
 					BlockingQueue<Message>  chosenMessagesQueue = SubscriberAndItsMessagesQueueMap.get(chosenSubscriberForE);
 					if (chosenMessagesQueue != null){
-						//add e to the chosen's Massages queue
-						chosenMessagesQueue.add(e);
+						//add e to the eventFutureMap
 						future = new Future<>();
 						eventFutureMap.put(e,future);
+						//add e to the chosen's Massages queue
+						chosenMessagesQueue.add(e);
 						//return chosen to the event type queue
 						interestedSubscribers.add(chosenSubscriberForE);
 					}
@@ -155,7 +156,11 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public Message awaitMessage(Subscriber s) throws InterruptedException {
-		// TODO Auto-generated method stub
+		try{
+			return SubscriberAndItsMessagesQueueMap.get(s).take();
+		}catch (InterruptedException e){
+			e.printStackTrace();
+		}
 		return null;
 	}
 
