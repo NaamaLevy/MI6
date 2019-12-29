@@ -6,20 +6,20 @@ import java.util.List;
 
 public class MissionReceivedEvent implements Event {
     private String missionName;
-    private List<String> agentNumber;
+    private List<String> agentsNumbers;
     private String gadget;
     private int time;
 
 
-    public MissionReceivedEvent(String missionName, List<String> agentNumber, String gadget) {
+    public MissionReceivedEvent(String missionName, List<String> agentsNumbers, String gadget) {
         this.missionName = missionName;
-        this.agentNumber = agentNumber;
+        this.agentsNumbers = agentsNumbers;
         this.gadget = gadget;
     }
 
     public String getMissionName() { return missionName; }
 
-    public List<String> getAgentNumber() { return agentNumber; }
+    public List<String> getAgentsNumbers() { return agentsNumbers; }
 
     public String getGadget() { return gadget; }
     public int getTime() { return time; }
