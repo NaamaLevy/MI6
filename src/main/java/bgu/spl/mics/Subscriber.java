@@ -22,7 +22,6 @@ public abstract class Subscriber extends RunnableSubPub {
     private boolean hasTerminated = false;
     private Map<Class<? extends Message>,Callback> typeAndItsCallbackMap = new HashMap<>();
     private final MessageBroker messageBrokerInstance = MessageBrokerImpl.getInstance();
-    //    private final CountDownLatch printLatch;   //QQQ what does it do?
 
     /**
      * @param name the Subscriber name (used mainly for debugging purposes -

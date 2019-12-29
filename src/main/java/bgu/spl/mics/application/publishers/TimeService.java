@@ -1,5 +1,7 @@
 package bgu.spl.mics.application.publishers;
 
+import bgu.spl.mics.MessageBroker;
+import bgu.spl.mics.MessageBrokerImpl;
 import bgu.spl.mics.Publisher;
 import bgu.spl.mics.application.messages.TerminateBroadCast;
 import bgu.spl.mics.application.messages.TickBroadcast;
@@ -18,41 +20,37 @@ import java.util.TimerTask;
  */
 public class TimeService extends Publisher {
 	int timeDuration;
+	int currentTime;
+	MessageBroker MB;
 
 	public TimeService(int timeDuration) {
 		super("TimeService");
 		this.timeDuration = timeDuration;
+		currentTime = 1;
+		MB = MessageBrokerImpl.getInstance();
 	}
 
 	@Override
 	protected void initialize() {
 
-		/*sends:
-		1. TickBroadcast (to APIService)
-		2. TerminateBroadcast (to everyone)
-		 * */
 
-//		Timer timer = new Timer();
-//		TimerTask task = new TimerTask() {
-//			@Override
-//			public void run() {
-//				if (timeDuration > currTick) {
-//					sendBroadcast(new TickBroadcast(currTick));
-//					currTick++;
-//				} else {
-//					sendBroadcast(new TerminateBroadCast());
-//					timer.cancel();
-//				}
-//			}
-//		};
-//		timer.scheduleAtFixedRate(task,100,speed);
-
+		Timer timer = new Timer();
+		TimerTask task = new TimerTask() {
+			@Override
+			public void run() {
+				if (timeDuration > currentTime) {
+					MB.sendBroadcast(new TickBroadcast(currentTime));
+					currentTime++;
+				} else {
+					MB.sendBroadcast(new TerminateBroadCast());
+					timer.cancel();
+				}
+			}
+		};
+		timer.scheduleAtFixedRate(task,100,100);
 	}
 
 	@Override
 	public void run() {
-		// TODO Implement this
 	}
-
-
 }
