@@ -1,5 +1,10 @@
 package bgu.spl.mics.application.passiveObjects;
 
+import com.google.gson.Gson;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -62,8 +67,14 @@ public class Diary {
 	 * This method is called by the main method in order to generate the output.
 	 */
 	public void printToFile(String filename){
-
-		//TODO: Implement this
+		String gson = new Gson().toJson(this);
+		try {
+			ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(filename));
+			output.writeObject(gson);
+			output.close();
+		}catch (IOException e){
+			e.printStackTrace();
+		}
 	}
 	/**
 	 * Gets the total number of received missions (executed / aborted) be all the M-instances.
