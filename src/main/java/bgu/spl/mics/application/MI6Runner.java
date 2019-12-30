@@ -12,6 +12,7 @@ import bgu.spl.mics.application.subscribers.Intelligence;
 import bgu.spl.mics.application.publishers.TimeService;
 import bgu.spl.mics.application.subscribers.M;
 import bgu.spl.mics.application.subscribers.Moneypenny;
+import bgu.spl.mics.application.subscribers.Q;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 /** This is the Main class of the application. You should parse the input file, 
@@ -35,28 +36,63 @@ public class MI6Runner {
         Gson gson = new Gson();
         InputData InputData = gson.fromJson(input,bgu.spl.mics.application.passiveObjects.InputData.class);
 
-        //creates passive objects
+        //create passive objects
         Inventory inventory = Inventory.getInstance();
         Squad squad = Squad.getInstance();
+        Diary diary = Diary.getInstance();
 
-        //load objects with json input
+        //load passive objects with json input
         inventory.load(InputData.getInventoryData());
         squad.load(InputData.getSquad());
 
-        //creates services objects
+        //create and initialize services objects
+
+        Q q = new Q();
+        Thread qThread = new Thread(q);
+        qThread.start();
+        try{
+            qThread.join();
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+
         for( int i = 0; i < InputData.getServices().getM(); i++){
             M m = new M(Integer.toString(i));
-
-            //TODO: push new M's to DataStructure
+            Thread mThread = new Thread(m);
+            mThread.start();
+            try{
+                mThread.join();
+            }catch (InterruptedException e){
+                e.printStackTrace();
+            }
         }
         for( int i = 0; i < InputData.getServices().getMoneypenny(); i++) {
             Moneypenny moneypenny = new Moneypenny(Integer.toString(i));
-            //TODO: push new Moneypenny's to DataStructure
-
+            Thread mpThread = new Thread(moneypenny);
+            mpThread.start();
+            try{
+                mpThread.join();
+            }catch (InterruptedException e){
+                e.printStackTrace();
+            }
         }
-        for( int i = 0; i < InputData.getServices().getIntelligences().length; i++)
+        for( int i = 0; i < InputData.getServices().getIntelligences().length; i++) {
             InputData.getServices().getIntelligences()[i].setId(i);
-
+            Thread inThread = new Thread(InputData.getServices().getIntelligences()[i]);
+            inThread.start();
+            try{
+                inThread.join();
+            }catch (InterruptedException e){
+                e.printStackTrace();
+            }
+        }
         TimeService timeService = new TimeService(InputData.getServices().getTime());
+        Thread timeThread = new Thread(timeService);
+        timeThread.start();
+        try{
+            timeThread.join();
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
     }
 }
