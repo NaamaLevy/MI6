@@ -1,11 +1,8 @@
 package bgu.spl.mics.application.passiveObjects;
 
-import com.google.gson.Gson;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Passive object representing the diary where all reports are stored.
@@ -20,7 +17,6 @@ public class Diary {
 	//***  fields  ***
 	private List<Report> reports;
 	private int total;
-
 	/**
 	 * Retrieves the single instance of this class.
 	 */
@@ -28,7 +24,18 @@ public class Diary {
 	//***  constructor (singleton, thread-safe)  ***
 	private static class SingletonHolder {
 		private static Diary diary = new Diary();
+
+
 	}
+
+
+
+	private Diary(){
+		reports = new LinkedList<Report>();
+		total = 0;
+	}
+
+
 
 	public static Diary getInstance() {
 		return Diary.SingletonHolder.diary;
@@ -44,6 +51,7 @@ public class Diary {
 	 */
 	public void addReport(Report reportToAdd){
 		reports.add(reportToAdd);
+
 	}
 
 	/**
@@ -54,19 +62,16 @@ public class Diary {
 	 * This method is called by the main method in order to generate the output.
 	 */
 	public void printToFile(String filename){
-		String gson = new Gson().toJson(this);
-		try {
-			ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(filename));
-			output.writeObject(gson);
-			output.close();
-		}catch (IOException e){
-			e.printStackTrace();
-		}
-	}
 
+		//TODO: Implement this
+	}
 	/**
 	 * Gets the total number of received missions (executed / aborted) be all the M-instances.
 	 * @return the total number of received missions (executed / aborted) be all the M-instances.
 	 */
 	public int getTotal(){ return total;}
+	public void incrementTotal(){ total++;}
+
 }
+
+
