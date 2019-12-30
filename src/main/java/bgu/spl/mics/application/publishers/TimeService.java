@@ -51,5 +51,6 @@ public class TimeService extends Publisher {
 
 	@Override
 	public void run() {
+		initialize();
 	}
 }
