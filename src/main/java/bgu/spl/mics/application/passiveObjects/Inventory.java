@@ -2,6 +2,9 @@ package bgu.spl.mics.application.passiveObjects;
 
 import com.google.gson.Gson;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -79,5 +82,12 @@ public class Inventory {
      */
     public void printToFile(String filename) {
         String gson = new Gson().toJson(this);
+        try {
+            ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(filename));
+            output.writeObject(gson);
+            output.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }
