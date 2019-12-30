@@ -50,66 +50,48 @@ public class MI6Runner {
         inventory.load(InputData.getInventoryData());
         squad.load(InputData.getSquad());
 
-        Thread[] threads = new Thread[InputData.getServices().getM()+InputData.getServices().getMoneypenny()+InputData.getServices().getIntelligences().length+2];
+        int mCount = InputData.getServices().getM();
+        int mpCount = InputData.getServices().getMoneypenny();
+        int intelCount = InputData.getServices().getIntelligences().length;
+        int counter = 0;
 
+        Runnable [] runnables = new Runnable[mCount+mpCount+intelCount+2];
+        Thread[] threads = new Thread[runnables.length];
         //create and initialize services objects
         TimeService timeService = new TimeService(InputData.getServices().getTime());
+        runnables[counter] = timeService;
         Thread timeThread = new Thread(timeService);
-        threads[0]= timeThread;
-
+        threads[counter] = timeThread;
+        counter++;
         Q q = new Q();
-        Thread qThread = new Thread(q);
-        qThread.start();
-        try{
-            timeThread.join();
-            System.out.println("check joinQ");
-        }catch (InterruptedException e){
-            e.printStackTrace();
-        }
-        threads[1]= qThread;
+        runnables[counter] = q;
+        counter++;
 
-        for( int i = 0; i < InputData.getServices().getM(); i++){
+        for( int i = 0; i < mCount; i++){
             M m = new M(Integer.toString(i));
-            Thread mThread = new Thread(m);
-            mThread.start();
-            System.out.println("check startM");
-            try{
-                timeThread.join();
-                System.out.println("check joinm");
-            }catch (InterruptedException e){
-                e.printStackTrace();
-            }
-            threads[1+i]= mThread;
+            runnables[counter] = m;
+            counter++;
         }
-        for( int i = 0; i < InputData.getServices().getMoneypenny(); i++) {
+        for( int i = 0; i < mpCount; i++) {
             Moneypenny moneypenny = new Moneypenny(Integer.toString(i));
-            Thread mpThread = new Thread(moneypenny);
-            mpThread.start();
-            try{
-                timeThread.join();
-            }catch (InterruptedException e){
-                e.printStackTrace();
-            }
-            threads[2+InputData.getServices().getM()+i]= mpThread;
+            runnables[counter] = moneypenny;
+            counter++;
         }
-        for( int i = 0; i < InputData.getServices().getIntelligences().length; i++) {
+        for( int i = 0; i < intelCount; i++) {
             InputData.getServices().getIntelligences()[i].setId(i);
-            Thread inThread = new Thread(InputData.getServices().getIntelligences()[i]);
-            inThread.start();
+            runnables[counter] = InputData.getServices().getIntelligences()[i];
+            counter++;
+        }
+        for (int i=0; i<runnables.length; i++){
+            Thread sub = new Thread(runnables[i]);
+            threads[i] = sub;
+            sub.start();
             try{
                 timeThread.join();
             }catch (InterruptedException e){
                 e.printStackTrace();
             }
-            threads[3+InputData.getServices().getMoneypenny()+InputData.getServices().getM()+i]= inThread;
         }
-//        TimeService timeService = new TimeService(InputData.getServices().getTime());
-//        Thread timeThread = new Thread(timeService);
-        timeThread.start();
-//        try{
-//            timeThread.join();
-//        }catch (InterruptedException e){
-//            e.printStackTrace();
-//        }
+        timeService.run();
     }
 }
