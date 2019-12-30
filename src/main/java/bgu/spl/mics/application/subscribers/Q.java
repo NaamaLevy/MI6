@@ -28,6 +28,7 @@ public class Q extends Subscriber {
 
 	@Override
 	protected void initialize() {
+		System.out.println("checkQ");
 		//subscribe Q to terminate BroadCast
 		subscribeBroadcast(TerminateBroadCast.class,(TerminateBroadCast terBC) -> terminate());
 		//subscribe Q to Tick BroadCast

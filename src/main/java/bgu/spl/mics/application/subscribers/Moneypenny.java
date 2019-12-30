@@ -26,6 +26,7 @@ public class Moneypenny extends Subscriber {
 
 	@Override
 	protected void initialize() {
+		System.out.println("initialize mp" + getName());
 		//subscribe MP to terminate BroadCast
 		subscribeBroadcast(TerminateBroadCast.class, (TerminateBroadCast terBC) -> terminate());
 		//subscribe MP to Tick BroadCast
