@@ -77,12 +77,12 @@ public class MI6Runner {
             runnables[counter] = moneypenny;
             counter++;
         }
-        for( int i = 0; i < intelCount; i++) {
-            InputData.getServices().getIntelligences()[i].setId(i);
-            runnables[counter] = InputData.getServices().getIntelligences()[i];
-            counter++;
-        }
-        for (int i=0; i<runnables.length; i++){
+//        for( int i = 0; i < intelCount; i++) {
+//            InputData.getServices().getIntelligences()[i].setId(i);
+//            runnables[counter] = InputData.getServices().getIntelligences()[i];
+//            counter++;
+//        }
+        for (int i=0; i<runnables.length-2; i++){
             Thread sub = new Thread(runnables[i]);
             threads[i] = sub;
             sub.start();
