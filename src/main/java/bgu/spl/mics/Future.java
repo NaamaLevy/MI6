@@ -88,4 +88,7 @@ public class Future<T> {
 		return result;
 	}
 
+    public boolean isDone() {  //
+		return true;
+    }
 }

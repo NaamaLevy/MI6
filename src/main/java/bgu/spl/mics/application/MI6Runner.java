@@ -21,8 +21,7 @@ import com.google.gson.JsonObject;
 public class MI6Runner {
     public static void main(String[] args) {
         System.out.println("hello");
-        //String jsonInput = args[0];
-        String jsonInput = "C:\\Users\\hille\\Desktop\\Uni\\semester c\\System programing\\MI6\\input2012.json";
+        String jsonInput = args[0];
       /*  String inventoryOutput = args[1];
         String diaryOutput = args[2];*/
 

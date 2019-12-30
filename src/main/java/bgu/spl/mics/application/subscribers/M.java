@@ -35,8 +35,8 @@ public class M extends Subscriber {
         subscribeBroadcast(TickBroadcast.class, (TickBroadcast tick) -> time = tick.getTick());
         //subscribe M to MissionReceivedEvent
         subscribeEvent(MissionReceivedEvent.class, (MissionReceivedEvent missionReceivedEvent) -> {
+            Diary.getInstance().incrementTotal(); // performs total++
             int processTick = time;
-            boolean completed = false;
             // checks if agents are available (isAgentsAvailableFuture will hold the answer)
             AgentsAvailableEvent agentsAvailableEvent = new AgentsAvailableEvent(missionReceivedEvent.getAgentsNumbers(), missionReceivedEvent.getDuration());
             Future<Boolean> isAgentsAvailableFuture = instanceOfMB.sendEvent(agentsAvailableEvent); //future takes the returned value of agentsAvailableEvent
@@ -70,9 +70,8 @@ public class M extends Subscriber {
                 }
             }
             agentsAvailableEvent.setShouldSendAgents(false); // set shouldSendAgents to true, so Monneypenny will release the agent(s)
-            //TODO - 1. we shouldnt has changed addReport (function mustn't get changed)
-            //       2. we are allowed to change int total to atomicInteger (and it suppoded to be good for a reason. through whatsapp.
-            //       3. we need the ability to increment WITHOUT addReport since increment happen regardless of the mission success
+
+
 
 
             }
