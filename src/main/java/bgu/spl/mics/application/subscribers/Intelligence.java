@@ -37,7 +37,7 @@ public class Intelligence extends Subscriber {
 			for (MissionInfo mission: missions){
 				if (mission.getTimeIssued()==tick.getTick()){
 					MissionReceivedEvent missionReceivedEvent = new MissionReceivedEvent(mission.getMissionName(),mission.getSerialAgentsNumbers(),mission.getGadget(), mission.getTimeExpired(), mission.getDuration(), mission.getTimeIssued());
-					Future<Boolean> missionFuture = MB.sendEvent(missionReceivedEvent);
+					getSimplePublisher().sendEvent(missionReceivedEvent);
 				}
 			}
 		});
@@ -47,5 +47,9 @@ public class Intelligence extends Subscriber {
 
 	private int getId() {
 		return id;
+	}
+
+	public MissionInfo[] getMission() {
+		return missions;
 	}
 }

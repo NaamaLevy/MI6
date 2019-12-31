@@ -129,7 +129,7 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public void register(Subscriber s) {
-		SubscriberAndItsMessagesQueueMap.put(s,new LinkedBlockingQueue());
+		SubscriberAndItsMessagesQueueMap.putIfAbsent(s,new LinkedBlockingQueue());
 	}
 
 	@Override

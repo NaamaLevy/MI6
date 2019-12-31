@@ -2,13 +2,13 @@ package bgu.spl.mics.application;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.reflect.Array;
-import java.util.Scanner;
+import java.util.*;
 
 import bgu.spl.mics.MessageBroker;
 import bgu.spl.mics.MessageBrokerImpl;
+import bgu.spl.mics.Subscriber;
 import bgu.spl.mics.application.passiveObjects.*;
 import java.io.*;
-import java.util.HashMap;
 import java.util.Scanner;
 import java.util.concurrent.*;
 
@@ -56,42 +56,55 @@ public class MI6Runner {
         int counter = 0;
 
         Runnable [] runnables = new Runnable[mCount+mpCount+intelCount+2];
-        Thread[] threads = new Thread[runnables.length];
+        List<Thread> threads = new ArrayList<>();
         //create and initialize services objects
         TimeService timeService = new TimeService(InputData.getServices().getTime());
         runnables[counter] = timeService;
-        Thread timeThread = new Thread(timeService);
-        threads[counter] = timeThread;
         counter++;
+
         Q q = new Q();
         runnables[counter] = q;
+        messageBroker.register(q);
+
         counter++;
 
         for( int i = 0; i < mCount; i++){
             M m = new M(Integer.toString(i));
             runnables[counter] = m;
+            messageBroker.register(m);
+
             counter++;
         }
         for( int i = 0; i < mpCount; i++) {
             Moneypenny moneypenny = new Moneypenny(Integer.toString(i));
             runnables[counter] = moneypenny;
+            messageBroker.register(moneypenny);
+
             counter++;
         }
-//        for( int i = 0; i < intelCount; i++) {
-//            InputData.getServices().getIntelligences()[i].setId(i);
-//            runnables[counter] = InputData.getServices().getIntelligences()[i];
-//            counter++;
-//        }
-        for (int i=0; i<runnables.length-2; i++){
-            Thread sub = new Thread(runnables[i]);
-            threads[i] = sub;
-            sub.start();
-            try{
-                timeThread.join();
-            }catch (InterruptedException e){
-                e.printStackTrace();
-            }
+        for( int i = 0; i < intelCount; i++) {
+            Intelligence intelligence = new Intelligence(InputData.getServices().getIntelligences()[i].getMission());
+            intelligence.setId(i);
+            runnables[counter] = intelligence;
+            messageBroker.register(intelligence);
+
+            counter++;
         }
-        timeService.run();
+        for (int i=0; i<runnables.length; i++) {
+            Thread sub = new Thread(runnables[i]);
+            if(i!=0)
+            threads.add(sub);
+            sub.setDaemon(true);
+            sub.start();
+        }
+
+            for(Thread thread : threads) {
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+        }
     }
 }
