@@ -41,7 +41,7 @@ public class Squad {
 		for (String serial:serials) {
 			if (agents.get(serial) != null) {
 				agents.get(serial).release();
-				agents.get(serial).notify();
+ 				agents.get(serial).notify();
 			}
 		}
 	}
