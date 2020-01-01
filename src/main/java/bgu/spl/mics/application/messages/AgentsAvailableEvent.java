@@ -10,7 +10,8 @@ public class AgentsAvailableEvent<Boolean> implements Event {
 
 
     /* private Future<Boolean> isAgentsAvailable;*/
-    private Boolean shouldSendAgents;
+    private boolean shouldSendAgents;
+    private final Object lock = new Object();
     private final List<String> agentsNumbers;
     private int time;
     private String Monneypenny;
@@ -22,39 +23,62 @@ public class AgentsAvailableEvent<Boolean> implements Event {
 
     public AgentsAvailableEvent(List<String> agentsNumbers, int duration) {
 
-        shouldSendAgents = null;
+        shouldSendAgents = false;
         this.agentsNumbers = agentsNumbers;
         this.duration = duration;
     }
 
-    public void setShouldSendAgents(Boolean shouldSendAgents) { this.shouldSendAgents = shouldSendAgents; }
+    public void setShouldSendAgents(boolean shouldSendAgents) {
+        this.shouldSendAgents = shouldSendAgents;
+    }
 
-    public int getTime() { return time; }
+    public int getTime() {
+        return time;
+    }
 
-    public void setTime(int time) { this.time = time; }
+    public void setTime(int time) {
+        this.time = time;
+    }
 
-    public List<String> getAgentsNumbers() { return agentsNumbers; }
+    public List<String> getAgentsNumbers() {
+        return agentsNumbers;
+    }
 
-    public int getDuration() { return duration; }
+    public int getDuration() {
+        return duration;
+    }
 
-    public void setDuration(int duration) { this.duration = duration; }
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
 
-    public String getMonneypenny() { return Monneypenny; }
+    public String getMonneypenny() {
+        return Monneypenny;
+    }
 
-    public void setMonneypenny(String monneypenny) { Monneypenny = monneypenny; }
-    public List<String> getAgentsName() { return agentsName; }
-    public void setAgentsName(List<String> agentsName) { this.agentsName = agentsName; }
+    public void setMonneypenny(String monneypenny) {
+        Monneypenny = monneypenny;
+    }
+
+    public List<String> getAgentsName() {
+        return agentsName;
+    }
+
+    public void setAgentsName(List<String> agentsName) {
+        this.agentsName = agentsName;
+    }
+
     public boolean getShouldSendAgents() {
-        synchronized (shouldSendAgents) {
-            while (shouldSendAgents == null) {
+        while (shouldSendAgents == false) {
+            synchronized (lock) {
                 try {
-                    shouldSendAgents.wait();
+                    lock.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            return (boolean) shouldSendAgents;
         }
+        return true;
 
 
     }

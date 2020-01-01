@@ -29,7 +29,7 @@ public class M extends Subscriber {
     @Override
     protected void initialize() {
 
-//        System.out.println("initialize m" + getName());
+        System.out.println("initialize m" + getName());
         //subscribe M to terminate BroadCast
         subscribeBroadcast(TerminateBroadCast.class, (TerminateBroadCast terBC) -> terminate());
         //subscribe M to Tick BroadCast
