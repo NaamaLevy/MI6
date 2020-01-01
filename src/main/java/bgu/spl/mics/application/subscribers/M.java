@@ -63,8 +63,13 @@ public class M extends Subscriber {
                                 report.setAgentsNames(missionReceivedEvent.getAgentsNumbers());
                                 report.setAgentsSerialNumbers(agentsAvailableEvent.getAgentsName());
                                 report.setGadgetName(missionReceivedEvent.getGadget());
-                                report.setM(Integer.parseInt(this.getName()));
-                                report.setMoneypenny(Integer.parseInt(agentsAvailableEvent.getMonneypenny()));
+                                System.out.println(this.getName());
+                                System.out.println(this.getName());
+                                System.out.println(this.getName());
+                                int mName = (int) Integer.parseInt(this.getName());
+                                report.setM(mName);
+                                int mpName = (int)Integer.parseInt(agentsAvailableEvent.getMonneypenny());
+                                report.setMoneypenny(mpName);
                                 report.setTimeIssued(missionReceivedEvent.getTimeIssued());
                                 report.setQTime(gadgetAvailableEvent.getTime());
                                 report.setTimeCreated(time);

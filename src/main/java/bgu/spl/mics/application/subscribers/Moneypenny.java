@@ -33,6 +33,7 @@ public class Moneypenny extends Subscriber {
 		subscribeBroadcast(TickBroadcast.class, (TickBroadcast tick) -> time = tick.getTick());
 		//subscribe MP to MissionReceivedEvent
 		subscribeEvent(AgentsAvailableEvent.class, (AgentsAvailableEvent agentsAvailableEvent) -> {
+			agentsAvailableEvent.setMonneypenny(getName());
 			complete(agentsAvailableEvent, squad.getAgents(agentsAvailableEvent.getAgentsNumbers())); // return, using complete, the availability of askedAgents
 					System.out.println("MoneyPenny: Agents are available for the mission" + " time:" + time );
 			if(agentsAvailableEvent.getShouldSendAgents()){ //waits for M to set shouldSendAgents to true
