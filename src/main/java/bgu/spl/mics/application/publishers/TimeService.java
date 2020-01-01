@@ -32,7 +32,7 @@ public class TimeService extends Publisher {
 
 	@Override
 	protected void initialize() {
-
+//		System.out.println("initialize int" + getId());
 		Timer timer = new Timer();
 		TimerTask task = new TimerTask() {
 			@Override

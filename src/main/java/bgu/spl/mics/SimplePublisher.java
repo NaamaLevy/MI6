@@ -26,7 +26,7 @@ public final class SimplePublisher {
     public final <T> Future<T> sendEvent(Event<T> e) {
         return messageBroker.sendEvent(e);
     }
-
+//		System.out.println("initialize int" + getId());
     /**
      * A Publisher calls this method in order to send the broadcast message {@code b} using the MessageBroker
      * to all the subscribers subscribed to it.

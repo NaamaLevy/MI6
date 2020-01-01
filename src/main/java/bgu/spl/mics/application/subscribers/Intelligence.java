@@ -29,7 +29,7 @@ public class Intelligence extends Subscriber {
 
 	@Override
 	protected void initialize() {
-		System.out.println("initialize int" + getId());
+//		System.out.println("initialize int" + getId());
 		//subscribe to terminate BroadCast
 		subscribeBroadcast(TerminateBroadCast.class, (TerminateBroadCast terBC) -> terminate());
 		//subscribe to Tick BroadCast
