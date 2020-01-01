@@ -38,10 +38,10 @@ public class TimeService extends Publisher {
 			@Override
 			public void run() {
 				if (timeDuration > currentTime) {
-					MB.sendBroadcast(new TickBroadcast(currentTime));
+					getSimplePublisher().sendBroadcast(new TickBroadcast(currentTime));
 					currentTime++;
 				} else {
-					MB.sendBroadcast(new TerminateBroadCast());
+					getSimplePublisher().sendBroadcast(new TerminateBroadCast());
 					timer.cancel();
 				}
 			}

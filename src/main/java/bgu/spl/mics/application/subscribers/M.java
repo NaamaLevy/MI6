@@ -4,6 +4,7 @@ import bgu.spl.mics.Future;
 import bgu.spl.mics.MessageBroker;
 import bgu.spl.mics.MessageBrokerImpl;
 import bgu.spl.mics.Subscriber;
+import bgu.spl.mics.SimplePublisher;
 import bgu.spl.mics.application.messages.*;
 import bgu.spl.mics.application.passiveObjects.Diary;
 import bgu.spl.mics.application.passiveObjects.Report;
@@ -37,14 +38,15 @@ public class M extends Subscriber {
         subscribeEvent(MissionReceivedEvent.class, (MissionReceivedEvent missionReceivedEvent) -> {
             Diary.getInstance().incrementTotal(); // performs total++
             int processTick = time;
+
             // checks if agents are available (isAgentsAvailableFuture will hold the answer)
             AgentsAvailableEvent agentsAvailableEvent = new AgentsAvailableEvent(missionReceivedEvent.getAgentsNumbers(), missionReceivedEvent.getDuration());
-            Future<Boolean> isAgentsAvailableFuture = instanceOfMB.sendEvent(agentsAvailableEvent); //future takes the returned value of agentsAvailableEvent
+            Future<Boolean> isAgentsAvailableFuture = getSimplePublisher().sendEvent(agentsAvailableEvent); //future takes the returned value of agentsAvailableEvent
             if (isAgentsAvailableFuture.isResolved()) {
                 boolean isAgentAvailable = isAgentsAvailableFuture.get();
                 if (isAgentAvailable) {
                     GadgetAvailableEvent gadgetAvailableEvent = (new GadgetAvailableEvent<Boolean>(missionReceivedEvent.getGadget()));
-                    Future<Integer> isGadgetAvailableFuture = instanceOfMB.sendEvent(gadgetAvailableEvent); // future takes the returned value of gadgetAvailableEvent
+                    Future<Integer> isGadgetAvailableFuture = getSimplePublisher().sendEvent(gadgetAvailableEvent); // future takes the returned value of gadgetAvailableEvent
                     if (isGadgetAvailableFuture != null) {
                         int isGadgetAvailable = isGadgetAvailableFuture.get(); //takes the returned value of the future (in int, -1 represents false, true otherwise
                         if (isGadgetAvailable > 0) { //default value is -1, if gadget is available time is set to current time (so it'll be positive)
