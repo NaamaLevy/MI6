@@ -29,7 +29,6 @@ public class Intelligence extends Subscriber {
 
 	@Override
 	protected void initialize() {
-//		System.out.println("initialize int" + getId());
 		//subscribe to terminate BroadCast
 		subscribeBroadcast(TerminateBroadCast.class, (TerminateBroadCast terBC) -> terminate());
 		//subscribe to Tick BroadCast
@@ -38,7 +37,7 @@ public class Intelligence extends Subscriber {
 				if (mission.getTimeIssued()==tick.getTick()){
 					MissionReceivedEvent missionReceivedEvent = new MissionReceivedEvent(mission.getMissionName(),mission.getSerialAgentsNumbers(),mission.getGadget(), mission.getTimeExpired(), mission.getDuration(), mission.getTimeIssued());
 					getSimplePublisher().sendEvent(missionReceivedEvent);
-					System.out.println("new mission from int"  + id + " " + tick.getTick() + mission.getMissionName());
+					System.out.println("Intelligence: new mission from int"  + id + " time:" + tick.getTick()+ " " + mission.getMissionName());
 				}
 			}
 		});

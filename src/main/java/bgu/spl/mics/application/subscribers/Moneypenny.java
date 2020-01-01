@@ -18,6 +18,7 @@ import bgu.spl.mics.application.passiveObjects.Squad;
  */
 public class Moneypenny extends Subscriber {
 	int time;
+	Squad squad = Squad.getInstance();
 
 	public Moneypenny(String name) {
 		super(name);
@@ -26,19 +27,21 @@ public class Moneypenny extends Subscriber {
 
 	@Override
 	protected void initialize() {
-		System.out.println("initialize mp" + getName());
 		//subscribe MP to terminate BroadCast
 		subscribeBroadcast(TerminateBroadCast.class, (TerminateBroadCast terBC) -> terminate());
 		//subscribe MP to Tick BroadCast
 		subscribeBroadcast(TickBroadcast.class, (TickBroadcast tick) -> time = tick.getTick());
 		//subscribe MP to MissionReceivedEvent
 		subscribeEvent(AgentsAvailableEvent.class, (AgentsAvailableEvent agentsAvailableEvent) -> {
-			complete(agentsAvailableEvent, Squad.getInstance().getAgents(agentsAvailableEvent.getAgentsNumbers())); // return, using complete, the availability of askedAgents
+			complete(agentsAvailableEvent, squad.getAgents(agentsAvailableEvent.getAgentsNumbers())); // return, using complete, the availability of askedAgents
+					System.out.println("MoneyPenny: Agents are available for the mission" + " time:" + time );
 			if(agentsAvailableEvent.getShouldSendAgents()){ //waits for M to set shouldSendAgents to true
-				agentsAvailableEvent.setAgentsName(Squad.getInstance().getAgentsNames(agentsAvailableEvent.getAgentsNumbers())); //set agentsName field in the event (for the report)
-				Squad.getInstance().sendAgents(agentsAvailableEvent.getAgentsNumbers(), agentsAvailableEvent.getDuration()); //sends the agents to the mission
+				agentsAvailableEvent.setAgentsName(squad.getAgentsNames(agentsAvailableEvent.getAgentsNumbers())); //set agentsName field in the event (for the report)
+				squad.sendAgents(agentsAvailableEvent.getAgentsNumbers(), agentsAvailableEvent.getDuration()); //sends the agents to the mission
+				System.out.println("MoneyPenny: Agents has been sent to the mission"  + time );
 			}
-			else Squad.getInstance().releaseAgents(agentsAvailableEvent.getAgentsNumbers()); //release the agents if mission was cancelled
+			else squad.releaseAgents(agentsAvailableEvent.getAgentsNumbers()); //release the agents if mission was cancelled
+					System.out.println("MoneyPenny: Agents has been released from the mission"  + " time:" + time );
 
 		}
 

@@ -29,7 +29,6 @@ public class M extends Subscriber {
     @Override
     protected void initialize() {
 
-//        System.out.println("initialize m" + getName());
         //subscribe M to terminate BroadCast
         subscribeBroadcast(TerminateBroadCast.class, (TerminateBroadCast terBC) -> terminate());
         //subscribe M to Tick BroadCast
@@ -45,11 +44,13 @@ public class M extends Subscriber {
             if (isAgentsAvailableFuture.isResolved()) {
                 boolean isAgentAvailable = isAgentsAvailableFuture.get();
                 if (isAgentAvailable) {
+                    System.out.println("M: We got the agents" + " time:" + time );
                     GadgetAvailableEvent gadgetAvailableEvent = (new GadgetAvailableEvent<Boolean>(missionReceivedEvent.getGadget()));
                     Future<Integer> isGadgetAvailableFuture = getSimplePublisher().sendEvent(gadgetAvailableEvent); // future takes the returned value of gadgetAvailableEvent
                     if (isGadgetAvailableFuture != null) {
                         int isGadgetAvailable = isGadgetAvailableFuture.get(); //takes the returned value of the future (in int, -1 represents false, true otherwise
                         if (isGadgetAvailable > 0) { //default value is -1, if gadget is available time is set to current time (so it'll be positive)
+                            System.out.println("M: We got the gadget " + " time:" + time );
                             if (missionReceivedEvent.getExpiredTime() > processTick && time != -1) {
                                 agentsAvailableEvent.setShouldSendAgents(true); // set shouldSendAgents to true, so Monneypenny will send the agent(s)
                                 //builds the report
