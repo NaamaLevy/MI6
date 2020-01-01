@@ -38,11 +38,12 @@ public class Squad {
 	 * Releases agents.
 	 */
 	public void releaseAgents(List<String> serials) {
-		for (String serial:serials)
+		for (String serial:serials) {
 			if (agents.get(serial) != null) {
 				agents.get(serial).release();
 				agents.get(serial).notify();
 			}
+		}
 	}
 
 	/**

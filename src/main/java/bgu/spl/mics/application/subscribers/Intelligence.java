@@ -38,6 +38,7 @@ public class Intelligence extends Subscriber {
 				if (mission.getTimeIssued()==tick.getTick()){
 					MissionReceivedEvent missionReceivedEvent = new MissionReceivedEvent(mission.getMissionName(),mission.getSerialAgentsNumbers(),mission.getGadget(), mission.getTimeExpired(), mission.getDuration(), mission.getTimeIssued());
 					getSimplePublisher().sendEvent(missionReceivedEvent);
+					System.out.println("new mission from int"  + id + " " + tick.getTick() + mission.getMissionName());
 				}
 			}
 		});
@@ -49,7 +50,7 @@ public class Intelligence extends Subscriber {
 		return id;
 	}
 
-	public MissionInfo[] getMission() {
+	public MissionInfo[] getMissions() {
 		return missions;
 	}
 }

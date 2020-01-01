@@ -44,7 +44,7 @@ public class MI6Runner {
         //create passive objects
         Inventory inventory = Inventory.getInstance();
         Squad squad = Squad.getInstance();
-        Diary diary = Diary.getInstance();
+
 
         //load passive objects with json input
         inventory.load(InputData.getInventoryData());
@@ -83,7 +83,7 @@ public class MI6Runner {
             counter++;
         }
         for( int i = 0; i < intelCount; i++) {
-            Intelligence intelligence = new Intelligence(InputData.getServices().getIntelligences()[i].getMission());
+            Intelligence intelligence = new Intelligence(InputData.getServices().getIntelligences()[i].getMissions());
             intelligence.setId(i);
             runnables[counter] = intelligence;
             messageBroker.register(intelligence);
@@ -104,7 +104,9 @@ public class MI6Runner {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
         }
+        Diary diary = Diary.getInstance();
+            diary.printToFile("Diary_Res");
+        inventory.printToFile("Inventory_Res");
     }
 }

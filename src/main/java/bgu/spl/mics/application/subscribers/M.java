@@ -40,7 +40,7 @@ public class M extends Subscriber {
             // checks if agents are available (isAgentsAvailableFuture will hold the answer)
             AgentsAvailableEvent agentsAvailableEvent = new AgentsAvailableEvent(missionReceivedEvent.getAgentsNumbers(), missionReceivedEvent.getDuration());
             Future<Boolean> isAgentsAvailableFuture = instanceOfMB.sendEvent(agentsAvailableEvent); //future takes the returned value of agentsAvailableEvent
-            if (isAgentsAvailableFuture != null) {
+            if (isAgentsAvailableFuture.isResolved()) {
                 boolean isAgentAvailable = isAgentsAvailableFuture.get();
                 if (isAgentAvailable) {
                     GadgetAvailableEvent gadgetAvailableEvent = (new GadgetAvailableEvent<Boolean>(missionReceivedEvent.getGadget()));
