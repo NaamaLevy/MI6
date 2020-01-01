@@ -96,7 +96,6 @@ public class MessageBrokerImpl implements MessageBroker {
 
 	@Override
 	public <T> Future<T> sendEvent(Event<T> e) {
-		System.out.println("New Event" + e.getClass());
 		Future<T> future = null;
 		Queue<Subscriber> interestedSubscribers = MessageAndItsSubscribersQueueMap.get(e.getClass());
 		//if there is no Subscribers up for the Event return null
@@ -125,7 +124,6 @@ public class MessageBrokerImpl implements MessageBroker {
 				}
 			}
 		}
-		System.out.println("Event has been sent" + e.getClass());
 		return future;
 
 	}
