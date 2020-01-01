@@ -41,11 +41,11 @@ public class M extends Subscriber {
             // checks if agents are available (isAgentsAvailableFuture will hold the answer)
             AgentsAvailableEvent agentsAvailableEvent = new AgentsAvailableEvent(missionReceivedEvent.getAgentsNumbers(), missionReceivedEvent.getDuration());
             System.out.println("M: Event accepted" + " time:" + time );
-            Future<Boolean> isAgentsAvailableFuture = getSimplePublisher().sendEvent(agentsAvailableEvent); //future takes the returned value of agentsAvailableEvent
+            Future<Integer> isAgentsAvailableFuture = getSimplePublisher().sendEvent(agentsAvailableEvent); //future takes the returned value of agentsAvailableEvent
             System.out.println("M: future" + " time:" + time );
             if (isAgentsAvailableFuture.isResolved()) {
-                boolean isAgentAvailable = isAgentsAvailableFuture.get();
-                if (isAgentAvailable) {
+                int isAgentAvailable = isAgentsAvailableFuture.get();
+                if (isAgentAvailable>0) {
                     System.out.println("M: We got the agents" + " time:" + time );
                     GadgetAvailableEvent gadgetAvailableEvent = (new GadgetAvailableEvent<Boolean>(missionReceivedEvent.getGadget()));
                     Future<Integer> isGadgetAvailableFuture = getSimplePublisher().sendEvent(gadgetAvailableEvent); // future takes the returned value of gadgetAvailableEvent

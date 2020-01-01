@@ -6,7 +6,7 @@ import bgu.spl.mics.application.passiveObjects.Agent;
 
 import java.util.List;
 
-public class AgentsAvailableEvent<Boolean> implements Event {
+public class AgentsAvailableEvent<Integer> implements Event {
 
 
     /* private Future<Boolean> isAgentsAvailable;*/
@@ -71,6 +71,7 @@ public class AgentsAvailableEvent<Boolean> implements Event {
     public boolean getShouldSendAgents() {
         while (shouldSendAgents == false) {
             synchronized (lock) {
+
                 try {
                     lock.wait();
                 } catch (InterruptedException e) {
