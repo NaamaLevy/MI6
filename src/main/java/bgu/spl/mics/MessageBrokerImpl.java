@@ -113,13 +113,14 @@ public class MessageBrokerImpl implements MessageBroker {
 				if (chosenSubscriberForE != null){
 					BlockingQueue<Message>  chosenMessagesQueue = SubscriberAndItsMessagesQueueMap.get(chosenSubscriberForE);
 					if (chosenMessagesQueue != null){
+						//return chosen to the event type queue
+						interestedSubscribers.add(chosenSubscriberForE);
 						//add e to the eventFutureMap
 						future = new Future<>();
 						eventFutureMap.put(e,future);
 						//add e to the chosen's Massages queue
 						chosenMessagesQueue.add(e);
-						//return chosen to the event type queue
-						interestedSubscribers.add(chosenSubscriberForE);
+
 					}
 				}
 			}
