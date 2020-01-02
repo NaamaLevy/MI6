@@ -30,7 +30,11 @@ public class Intelligence extends Subscriber {
 	@Override
 	protected void initialize() {
 		//subscribe to terminate BroadCast
-		subscribeBroadcast(TerminateBroadCast.class, (TerminateBroadCast terBC) -> terminate());
+		subscribeBroadcast(TerminateBroadCast.class, (TerminateBroadCast terBC) -> {
+					System.out.println("int terminating");
+					terminate();
+
+		} );
 		//subscribe to Tick BroadCast
 		subscribeBroadcast(TickBroadcast.class, (TickBroadcast tick) -> {
 			for (MissionInfo mission: missions){

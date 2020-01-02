@@ -33,6 +33,7 @@ public class Moneypenny extends Subscriber {
 		//subscribe MP to terminate BroadCast
 		subscribeBroadcast(MTerminateBroadCast.class, (MTerminateBroadCast terBC) -> {
 			squad.releaseAgents(squadNumbers);
+			System.out.println("MP is terminating");
 			terminate();
 		});
 		//subscribe MP to Tick BroadCast
@@ -49,7 +50,6 @@ public class Moneypenny extends Subscriber {
 			else
 				ans = -1;
 					complete(agentsAvailableEvent, ans); // return, using complete, the availability of askedAgents
-					System.out.println("MoneyPenny" +this.getName()+": Agents are available for the mission   " + " time:" +		time);
 					agentsAvailableEvent.setAgentsName(squad.getAgentsNames(agentsAvailableEvent.getAgentsNumbers())); //set agentsName field in the event (for the report)
 			});
 

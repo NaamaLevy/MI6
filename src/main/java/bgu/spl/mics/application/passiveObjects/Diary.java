@@ -71,6 +71,7 @@ public class Diary {
 		String diaryOut = new Gson().toJson(this);
 		try (Writer writer = new FileWriter(filename)) {
 			writer.write(diaryOut);
+			System.out.println("PRINTED");
 		}
 		catch (Exception e){
 			e.printStackTrace();

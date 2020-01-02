@@ -26,7 +26,12 @@ public class M extends Subscriber {
     protected void initialize() {
 
         //subscribe M to terminate BroadCast
-        subscribeBroadcast(TerminateBroadCast.class, (TerminateBroadCast terBC) -> terminate());
+        subscribeBroadcast(TerminateBroadCast.class, (TerminateBroadCast terBC) -> {
+            System.out.println("M terminating");
+            getSimplePublisher().sendBroadcast(new MTerminateBroadCast());
+            terminate();
+
+        } );
         //subscribe M to Tick BroadCast
         subscribeBroadcast(TickBroadcast.class, (TickBroadcast tick) -> time = tick.getTick());
         //subscribe M to MissionReceivedEvent

@@ -29,7 +29,11 @@ public class Q extends Subscriber {
 	@Override
 	protected void initialize() {
 		//subscribe Q to terminate BroadCast
-		subscribeBroadcast(TerminateBroadCast.class,(TerminateBroadCast terBC) -> terminate());
+		subscribeBroadcast(TerminateBroadCast.class, (TerminateBroadCast terBC) -> {
+			System.out.println("Q terminating");
+			terminate();
+
+		} );
 		//subscribe Q to Tick BroadCast
 		subscribeBroadcast(TickBroadcast.class, (TickBroadcast tick) -> time = tick.getTick());
 		//subscribe Q to GadgetAvailableEvent BroadCast

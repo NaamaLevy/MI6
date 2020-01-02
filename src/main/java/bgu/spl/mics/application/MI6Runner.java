@@ -117,6 +117,7 @@ public class MI6Runner {
                 }
         }
         Diary diary = Diary.getInstance();
+        System.out.println("PRINTING");
             diary.printToFile("Diary_Res");
         inventory.printToFile("Inventory_Res");
     }

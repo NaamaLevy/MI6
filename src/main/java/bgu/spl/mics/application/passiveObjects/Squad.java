@@ -13,8 +13,9 @@ import java.util.concurrent.Semaphore;
  */
 public class Squad {
 
-	private Map<String, Agent> agents;
+	public Map<String, Agent> agents;
 	private Semaphore semaphore;
+
 
 	// creates a singleton
 	private static class SingletonHolder {
@@ -50,12 +51,21 @@ public class Squad {
 	 * Releases agents.
 	 */
 	public void releaseAgents(List<String> serials) {
-		for (String serial:serials) {
-			if (agents.get(serial) != null) {
-				agents.get(serial).release();
+
+		if (!serials.isEmpty()) {
+			System.out.println("TEST  1");
+			for (String serial : serials) {
+				System.out.println("TEST  2");
+				if (agents.containsKey(serial)) {
+					System.out.println("TEST  3");
+					agents.get(serial).release();
+					System.out.println("TEST  4");
+
+				}
 			}
 		}
 		semaphore.release();
+
 	}
 
 	/**
