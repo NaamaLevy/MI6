@@ -90,8 +90,8 @@ public class Squad {
 					e.printStackTrace();
 				}
 
-				agentToAcquire.acquire();
 			}
+			agentToAcquire.acquire();
 		}
 		semaphore.release();
 		return true;
