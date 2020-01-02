@@ -26,7 +26,12 @@ public class M extends Subscriber {
     protected void initialize() {
 
         //subscribe M to terminate BroadCast
-        subscribeBroadcast(TerminateBroadCast.class, (TerminateBroadCast terBC) -> terminate());
+        subscribeBroadcast(TerminateBroadCast.class, (TerminateBroadCast terBC) -> {
+            getSimplePublisher().sendBroadcast(new MTerminateBroadCast());
+            terminate();
+                });
+
+
         //subscribe M to Tick BroadCast
         subscribeBroadcast(TickBroadcast.class, (TickBroadcast tick) -> time = tick.getTick());
         //subscribe M to MissionReceivedEvent
@@ -41,12 +46,15 @@ public class M extends Subscriber {
             report.setGadgetName(meE.getGadget());
 
             AgentsAvailableEvent agentsAvailableEvent = new AgentsAvailableEvent(meE.getAgentsNumbers());
+            System.out.println("M: Event accepted" + " time:" + time );
             Future<Integer> isAgentsAvailableFuture = getSimplePublisher().sendEvent(agentsAvailableEvent);
+            System.out.println("M: future recieved from Moneypenny" + " time:" + time );
             int agentsAvailable = 0;
             if (isAgentsAvailableFuture != null)
                 agentsAvailable = isAgentsAvailableFuture.get();
             int gadgetAvailable = 0;
             if (isAgentsAvailableFuture != null && agentsAvailable == 1){
+                System.out.println("M: We got the agents" + " time:" + time );
                 GadgetAvailableEvent gadgetAvailableEvent = (new GadgetAvailableEvent<Boolean>(meE.getGadget()));
                 Future<Integer> isGadgetAvailableFuture = getSimplePublisher().sendEvent(gadgetAvailableEvent);
 
@@ -54,9 +62,10 @@ public class M extends Subscriber {
                     agentsAvailable = isGadgetAvailableFuture.get();
             }
             if ((agentsAvailable==1) && (gadgetAvailable > 0) && (agentsAvailable <= meE.getExpiredTime())){
+                System.out.println("M: We got the gadget " + " time:" + time );
                 AgentsSendToMissionEvent agentsSendToMissionEvent = new AgentsSendToMissionEvent(meE.getAgentsNumbers(),meE.getDuration() );
                 Future SendAgentsFuture = getSimplePublisher().sendEvent(agentsAvailableEvent);
-
+                System.out.println("M: Agents out for mission " + " time:" + time );
                 int mName = (int) Integer.parseInt(this.getName());
                 report.setM(mName);
                 int mpName = (int)Integer.parseInt(agentsAvailableEvent.getMonneypenny());

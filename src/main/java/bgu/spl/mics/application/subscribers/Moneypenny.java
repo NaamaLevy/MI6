@@ -45,13 +45,11 @@ public class Moneypenny extends Subscriber {
 			}
 			else squad.releaseAgents(agentsAvailableEvent.getAgentsNumbers()); //release the agents if mission was cancelled
 					System.out.println("MoneyPenny: Agents has been released from the mission"  + " time:" + time );
-
 		}
 
 		);
 	}
 }
-
 
 
 

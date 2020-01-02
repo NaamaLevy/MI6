@@ -31,27 +31,28 @@ public class TimeService extends Publisher {
 	}
 
 	@Override
-	protected void initialize() {
-//		System.out.println("initialize int" + getId());
-		Timer timer = new Timer();
-		TimerTask task = new TimerTask() {
-			@Override
-			public void run() {
-				if (timeDuration > currentTime) {
-					System.out.println("TimeService: Current time:" + currentTime );
-					getSimplePublisher().sendBroadcast(new TickBroadcast(currentTime));
-					currentTime++;
-				} else {
-					getSimplePublisher().sendBroadcast(new TerminateBroadCast());
-					timer.cancel();
-				}
-			}
-		};
-		timer.scheduleAtFixedRate(task,100,100);
-	}
+	protected void initialize() {}
 
 	@Override
 	public void run() {
-		initialize();
+		{
+//		System.out.println("initialize int" + getId());
+			Timer timer = new Timer();
+			TimerTask task = new TimerTask() {
+				@Override
+				public void run() {
+					if (timeDuration > currentTime) {
+						System.out.println("TimeService: Current time:" + currentTime );
+						getSimplePublisher().sendBroadcast(new TickBroadcast(currentTime));
+						currentTime++;
+					} else {
+						getSimplePublisher().sendBroadcast(new TerminateBroadCast());
+						timer.cancel();
+						timer.purge();
+					}
+				}
+			};
+			timer.scheduleAtFixedRate(task,100,100);
+		}
 	}
 }
