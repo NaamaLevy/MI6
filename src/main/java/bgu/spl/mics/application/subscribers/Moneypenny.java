@@ -56,6 +56,7 @@ public class Moneypenny extends Subscriber {
 		}
 		else {
 			subscribeEvent(AgentsSendToMissionEvent.class, (AgentsSendToMissionEvent agentsSendToMissionEvent) -> {
+				System.out.println(" PLEASE SEND AGENT");
 						squad.sendAgents(agentsSendToMissionEvent.getAgentsNumbers(), agentsSendToMissionEvent.getDuration()); //sends the agents to the mission
 						complete(agentsSendToMissionEvent, null);
 					});

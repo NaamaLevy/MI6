@@ -43,7 +43,7 @@ public class M extends Subscriber {
 
             AgentsAvailableEvent agentsAvailableEvent = new AgentsAvailableEvent(meE.getAgentsNumbers());
             Future<Integer> isAgentsAvailableFuture = getSimplePublisher().sendEvent(agentsAvailableEvent);
-            System.out.println("M: Agents are you up for the mission???  " + " time:" + time );
+            System.out.println("M: Agents are you up for the mission"+ meE.getMissionName() + " time:" + time );
             int agentsAvailable = 0;
             if (isAgentsAvailableFuture != null)
                 agentsAvailable = isAgentsAvailableFuture.get();
