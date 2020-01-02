@@ -21,7 +21,7 @@ public class AgentsAvailableEvent<Integer> implements Event {
     private int duration;
 
 
-    public AgentsAvailableEvent(List<String> agentsNumbers, int duration) {
+    public AgentsAvailableEvent(List<String> agentsNumbers) {
 
         shouldSendAgents = false;
         this.agentsNumbers = agentsNumbers;

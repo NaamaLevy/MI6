@@ -1,10 +1,6 @@
 package bgu.spl.mics.application.subscribers;
 
-import bgu.spl.mics.Future;
-import bgu.spl.mics.MessageBroker;
-import bgu.spl.mics.MessageBrokerImpl;
-import bgu.spl.mics.Subscriber;
-import bgu.spl.mics.SimplePublisher;
+import bgu.spl.mics.*;
 import bgu.spl.mics.application.messages.*;
 import bgu.spl.mics.application.passiveObjects.Diary;
 import bgu.spl.mics.application.passiveObjects.Report;
@@ -18,11 +14,12 @@ import bgu.spl.mics.application.passiveObjects.Report;
 public class M extends Subscriber {
 
     private int time;
-    MessageBroker instanceOfMB = MessageBrokerImpl.getInstance();
-
+    MessageBroker instanceOfMB;
+    private Diary diary;
     public M(String name) {
         super(name);
-        this.time = -1;
+        instanceOfMB = MessageBrokerImpl.getInstance();
+        diary = Diary.getInstance();
 
     }
 
@@ -34,6 +31,29 @@ public class M extends Subscriber {
         //subscribe M to Tick BroadCast
         subscribeBroadcast(TickBroadcast.class, (TickBroadcast tick) -> time = tick.getTick());
         //subscribe M to MissionReceivedEvent
+        Callback<MissionReceivedEvent> missionReceivedEventCallback = (MissionReceivedEvent meE) ->{
+            diary.incrementTotal();
+            AgentsAvailableEvent agentsAvailableEvent = new AgentsAvailableEvent(meE.getAgentsNumbers());
+            Future<Integer> isAgentsAvailableFuture = getSimplePublisher().sendEvent(agentsAvailableEvent);
+            int agentsAvailable = 0;
+            if (isAgentsAvailableFuture != null)
+                agentsAvailable = isAgentsAvailableFuture.get();
+            int gadgetAvailable = 0;
+            if (isAgentsAvailableFuture != null && agentsAvailable == 1){
+                GadgetAvailableEvent gadgetAvailableEvent = (new GadgetAvailableEvent<Boolean>(meE.getGadget()));
+                Future<Integer> isGadgetAvailableFuture = getSimplePublisher().sendEvent(gadgetAvailableEvent);
+
+                if (isGadgetAvailableFuture!=null)
+                    agentsAvailable = isGadgetAvailableFuture.get();
+            }
+            if ((agentsAvailable==1) && (gadgetAvailable > 0) && (agentsAvailable <= meE.getExpiredTime())){
+                AgentsSendToMissionEvent agentsSendToMissionEvent = new AgentsSendToMissionEvent(meE.getAgentsNumbers());
+                Future<Integer> isAgentsAvailableFuture = getSimplePublisher().sendEvent(agentsAvailableEvent);
+            }
+
+
+        };
+
         subscribeEvent(MissionReceivedEvent.class, (MissionReceivedEvent missionReceivedEvent) -> {
             Diary.getInstance().incrementTotal(); // performs total++
             int processTick = time;
