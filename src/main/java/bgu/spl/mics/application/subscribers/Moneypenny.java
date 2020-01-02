@@ -43,7 +43,12 @@ public class Moneypenny extends Subscriber {
 		if(agentAvailableHandler){
 		subscribeEvent(AgentsAvailableEvent.class, (AgentsAvailableEvent agentsAvailableEvent) -> {
 					agentsAvailableEvent.setMonneypenny(getName()); //update MP id that handle the event for the report
-					complete(agentsAvailableEvent, squad.getAgents(agentsAvailableEvent.getAgentsNumbers())); // return, using complete, the availability of askedAgents
+			int ans = 0;
+			if (squad.getAgents(agentsAvailableEvent.getAgentsNumbers()))
+						ans = 1;
+			else
+				ans = -1;
+					complete(agentsAvailableEvent, ans); // return, using complete, the availability of askedAgents
 					System.out.println("MoneyPenny: Agents are available for the mission" + " time:" + time);
 					agentsAvailableEvent.setAgentsName(squad.getAgentsNames(agentsAvailableEvent.getAgentsNumbers())); //set agentsName field in the event (for the report)
 			});
@@ -53,7 +58,6 @@ public class Moneypenny extends Subscriber {
 			subscribeEvent(AgentsSendToMissionEvent.class, (AgentsSendToMissionEvent agentsSendToMissionEvent) -> {
 						squad.sendAgents(agentsSendToMissionEvent.getAgentsNumbers(), agentsSendToMissionEvent.getDuration()); //sends the agents to the mission
 						complete(agentsSendToMissionEvent, null);
-					System.out.println("MoneyPenny: Agents has been sent to the mission  time:" + time);
 					});
 			subscribeEvent(ReleaseAgentsEvent.class, (ReleaseAgentsEvent releaseAgentsEvent) -> {
 					squad.releaseAgents(releaseAgentsEvent.getAgentsNumbers()); //release the agents if mission was cancelled

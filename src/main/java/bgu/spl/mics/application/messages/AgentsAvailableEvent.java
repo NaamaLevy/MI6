@@ -10,7 +10,6 @@ public class AgentsAvailableEvent<Integer> implements Event {
 
 
     /* private Future<Boolean> isAgentsAvailable;*/
-    private boolean shouldSendAgents;
     private final Object lock = new Object();
     private final List<String> agentsNumbers;
     private int time;
@@ -23,16 +22,10 @@ public class AgentsAvailableEvent<Integer> implements Event {
 
     public AgentsAvailableEvent(List<String> agentsNumbers) {
 
-        shouldSendAgents = false;
         this.agentsNumbers = agentsNumbers;
-        this.duration = duration;
+
     }
 
-    public void setShouldSendAgents(boolean shouldSendAgents) {
-
-        this.shouldSendAgents = shouldSendAgents;
-        lock.notifyAll();
-    }
 
     public int getTime() {
         return time;
@@ -68,21 +61,6 @@ public class AgentsAvailableEvent<Integer> implements Event {
 
     public void setAgentsName(List<String> agentsName) {
         this.agentsName = agentsName;
-    }
-
-    public boolean getShouldSendAgents() {
-
-        synchronized (lock) {
-            try {
-                lock.wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return true;
-
-
     }
 
 
