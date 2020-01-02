@@ -29,7 +29,9 @@ public class AgentsAvailableEvent<Integer> implements Event {
     }
 
     public void setShouldSendAgents(boolean shouldSendAgents) {
+
         this.shouldSendAgents = shouldSendAgents;
+        lock.notifyAll();
     }
 
     public int getTime() {
@@ -69,16 +71,15 @@ public class AgentsAvailableEvent<Integer> implements Event {
     }
 
     public boolean getShouldSendAgents() {
-        while (shouldSendAgents == false) {
-            synchronized (lock) {
 
-                try {
-                    lock.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        synchronized (lock) {
+            try {
+                lock.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
+
         return true;
 
 

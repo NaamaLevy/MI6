@@ -35,8 +35,10 @@ public class Moneypenny extends Subscriber {
 		subscribeEvent(AgentsAvailableEvent.class, (AgentsAvailableEvent agentsAvailableEvent) -> {
 			agentsAvailableEvent.setMonneypenny(getName());
 			complete(agentsAvailableEvent, squad.getAgents(agentsAvailableEvent.getAgentsNumbers())); // return, using complete, the availability of askedAgents
-					System.out.println("MoneyPenny: Agents are available for the mission" + " time:" + time );
-			if(agentsAvailableEvent.getShouldSendAgents()){ //waits for M to set shouldSendAgents to true
+			System.out.println("MoneyPenny: Agents are available for the mission" + " time:" + time );
+			boolean b = agentsAvailableEvent.getShouldSendAgents();
+					System.out.println("AAAAAAAAAA");
+			if(b){ //waits for M to set shouldSendAgents to true
 				agentsAvailableEvent.setAgentsName(squad.getAgentsNames(agentsAvailableEvent.getAgentsNumbers())); //set agentsName field in the event (for the report)
 				squad.sendAgents(agentsAvailableEvent.getAgentsNumbers(), agentsAvailableEvent.getDuration()); //sends the agents to the mission
 				System.out.println("MoneyPenny: Agents has been sent to the mission"  + time );
