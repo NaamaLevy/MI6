@@ -140,7 +140,7 @@ public class MessageBrokerImpl implements MessageBroker {
 		synchronized (lock){
 			//complete every event assigned to s
 			BlockingQueue<Message> subscriberQueue = SubscriberAndItsMessagesQueueMap.get(s);
-			if (subscriberQueue != null){
+			if (s != null && subscriberQueue != null){
 				for (Message message : subscriberQueue){
 					if (message instanceof Event){
 						complete((Event)message, null);   //QQQ N, why do we resolve its events as null? aren't we missing events s was supposed to handle?

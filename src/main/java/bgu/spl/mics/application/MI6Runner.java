@@ -76,9 +76,16 @@ public class MI6Runner {
             counter++;
         }
         for( int i = 0; i < mpCount; i++) {
-            Moneypenny moneypenny = new Moneypenny(Integer.toString(i));
-            runnables[counter] = moneypenny;
-            messageBroker.register(moneypenny);
+            if(i%2==0) {
+                Moneypenny moneypenny = new Moneypenny(Integer.toString(i), true);
+                runnables[counter] = moneypenny;
+                messageBroker.register(moneypenny);
+            }
+            else{
+                Moneypenny moneypenny = new Moneypenny(Integer.toString(i) ,false);
+                runnables[counter] = moneypenny;
+                messageBroker.register(moneypenny);
+            }
 
             counter++;
         }

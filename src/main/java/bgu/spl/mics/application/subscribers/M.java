@@ -79,6 +79,7 @@ public class M extends Subscriber {
                                 missionReceivedEvent.setM(this.getName());
                                 missionReceivedEvent.setMoneypenny(agentsAvailableEvent.getMonneypenny());
                                 Report report = new Report();
+                                report.setTimeCreated(time);
                                 report.setMissionName(missionReceivedEvent.getMissionName());
                                 report.setAgentsNames(missionReceivedEvent.getAgentsNumbers());
                                 report.setAgentsSerialNumbers(agentsAvailableEvent.getAgentsName());
@@ -92,7 +93,6 @@ public class M extends Subscriber {
                                 report.setMoneypenny(mpName);
                                 report.setTimeIssued(missionReceivedEvent.getTimeIssued());
                                 report.setQTime(gadgetAvailableEvent.getTime());
-                                report.setTimeCreated(time);
                                 Diary.getInstance().addReport(report); //adds the report to the diary
                             }
                         }

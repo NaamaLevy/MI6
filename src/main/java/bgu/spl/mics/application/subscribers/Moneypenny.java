@@ -19,10 +19,11 @@ import bgu.spl.mics.application.passiveObjects.Squad;
 public class Moneypenny extends Subscriber {
 	int time;
 	Squad squad = Squad.getInstance();
+	boolean agentAvailableHandler;
 
-	public Moneypenny(String name) {
+	public Moneypenny(String name, boolean isEven) {
 		super(name);
-
+		this.agentAvailableHandler = isEven;
 	}
 
 	@Override
@@ -37,7 +38,6 @@ public class Moneypenny extends Subscriber {
 			complete(agentsAvailableEvent, squad.getAgents(agentsAvailableEvent.getAgentsNumbers())); // return, using complete, the availability of askedAgents
 			System.out.println("MoneyPenny: Agents are available for the mission" + " time:" + time );
 			boolean b = agentsAvailableEvent.getShouldSendAgents();
-					System.out.println("AAAAAAAAAA");
 			if(b){ //waits for M to set shouldSendAgents to true
 				agentsAvailableEvent.setAgentsName(squad.getAgentsNames(agentsAvailableEvent.getAgentsNumbers())); //set agentsName field in the event (for the report)
 				squad.sendAgents(agentsAvailableEvent.getAgentsNumbers(), agentsAvailableEvent.getDuration()); //sends the agents to the mission
@@ -45,7 +45,7 @@ public class Moneypenny extends Subscriber {
 			}
 			else squad.releaseAgents(agentsAvailableEvent.getAgentsNumbers()); //release the agents if mission was cancelled
 					System.out.println("MoneyPenny: Agents has been released from the mission"  + " time:" + time );
-	//testesteset
+
 		}
 
 		);
