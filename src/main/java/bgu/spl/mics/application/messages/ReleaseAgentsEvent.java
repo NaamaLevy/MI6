@@ -1,24 +1,22 @@
 package bgu.spl.mics.application.messages;
-
 import bgu.spl.mics.Event;
-
 import java.util.List;
 
 public class ReleaseAgentsEvent implements Event {
 
-    List<String> list;
+    private List<String> agentsNumbers;
 
-    public ReleaseAgentsEvent(List<String> list)
+    public ReleaseAgentsEvent(List<String> agentsNumbers)
     {
-        this.list = list;
+        this.agentsNumbers = agentsNumbers;
     }
 
 
-    public void setList(List<String> list) {
-        this.list = list;
+    public void setAgentsNumbers(List<String> agentsNumbers) {
+        this.agentsNumbers = agentsNumbers;
     }
-    public List<String> getList() {
-        return list;
+    public List<String> getAgentsNumbers() {
+        return agentsNumbers;
     }
 
 }

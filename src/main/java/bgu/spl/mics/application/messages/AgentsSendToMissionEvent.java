@@ -4,20 +4,21 @@ import bgu.spl.mics.Event;
 import java.util.List;
 
 public class AgentsSendToMissionEvent implements Event {
-    private List<String> list;
+
+    private List<String> agentsNumbers;
     private  int duration;
 
-    public AgentsSendToMissionEvent(List<String> list, int duration) {
-        this.list = list;
+    public AgentsSendToMissionEvent(List<String> agentsNumbers, int duration) {
+        this.agentsNumbers = agentsNumbers;
         this.duration = duration;
     }
 
-    public List<String> getList() {
-        return list;
+    public List<String> getAgentsNumbers() {
+        return agentsNumbers;
     }
 
-    public void setList(List<String> list) {
-        this.list = list;
+    public void setAgentsNumbers(List<String> list) {
+        this.agentsNumbers = agentsNumbers;
     }
 
     public int getDuration() {
