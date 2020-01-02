@@ -36,7 +36,7 @@ public class Q extends Subscriber {
 		subscribeEvent(GadgetAvailableEvent.class, (GadgetAvailableEvent gadgetAvailableEvent )->{
 			String askedGadget = gadgetAvailableEvent.getGadgetName(); //takes the value of the needed gadget
 			if(Inventory.getInstance().getItem(askedGadget)) gadgetAvailableEvent.setTime(time); // if gadget is available, set the event's time field to current time
-			System.out.println("Q: The required gadget is available for the mission" + " time:" + time );
+			System.out.println("Q: The required gadget," + askedGadget + ", is available for the mission" + " time:" + time );
 			complete(gadgetAvailableEvent, gadgetAvailableEvent.getTime()); // return, using complete, the availability of askedGadget
 		});
 	}

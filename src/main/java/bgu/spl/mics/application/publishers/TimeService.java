@@ -41,7 +41,7 @@ public class TimeService extends Publisher {
 			TimerTask task = new TimerTask() {
 				@Override
 				public void run() {
-					if (timeDuration > currentTime) {
+					if (timeDuration >= currentTime) {
 						System.out.println("TimeService: Current time:" + currentTime );
 						getSimplePublisher().sendBroadcast(new TickBroadcast(currentTime));
 						currentTime++;
@@ -52,7 +52,7 @@ public class TimeService extends Publisher {
 					}
 				}
 			};
-			timer.scheduleAtFixedRate(task,500,500);
+			timer.scheduleAtFixedRate(task,100,100);
 		}
 
 	}
