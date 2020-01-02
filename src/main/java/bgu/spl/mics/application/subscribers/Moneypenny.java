@@ -37,12 +37,7 @@ public class Moneypenny extends Subscriber {
 		});
 		//subscribe MP to Tick BroadCast
 		subscribeBroadcast(TickBroadcast.class, (TickBroadcast tick) -> time = tick.getTick());
-		if (agentAvailableHandler){
-			subscribeEvent(ReleaseAgentsEvent.class, (ReleaseAgentsEvent relAg) ->{
-				squad.releaseAgents(relAg.getAgentsNumbers());
-				complete(relAg, null);
-			});
-		}
+
 
 		//subscribe MP to MissionReceivedEvent
 		if(agentAvailableHandler){
@@ -52,6 +47,7 @@ public class Moneypenny extends Subscriber {
 					System.out.println("MoneyPenny: Agents are available for the mission" + " time:" + time);
 					agentsAvailableEvent.setAgentsName(squad.getAgentsNames(agentsAvailableEvent.getAgentsNumbers())); //set agentsName field in the event (for the report)
 			});
+
 		}
 		else {
 			subscribeEvent(AgentsSendToMissionEvent.class, (AgentsSendToMissionEvent agentsSendToMissionEvent) -> {
