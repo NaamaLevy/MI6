@@ -51,9 +51,9 @@ public class M extends Subscriber {
                 Future<Integer> isGadgetAvailableFuture = getSimplePublisher().sendEvent(gadgetAvailableEvent);
 
                 if (isGadgetAvailableFuture!=null)
-                    gadgetAvailable = isGadgetAvailableFuture.get();
+                    agentsAvailable = isGadgetAvailableFuture.get();
             }
-            if ((agentsAvailable==1) && (gadgetAvailable > 0) && (gadgetAvailable <= meE.getExpiredTime())){
+            if ((agentsAvailable==1) && (gadgetAvailable > 0) && (agentsAvailable <= meE.getExpiredTime())){
                 AgentsSendToMissionEvent agentsSendToMissionEvent = new AgentsSendToMissionEvent(meE.getAgentsNumbers(),meE.getDuration() );
                 Future SendAgentsFuture = getSimplePublisher().sendEvent(agentsAvailableEvent);
 
