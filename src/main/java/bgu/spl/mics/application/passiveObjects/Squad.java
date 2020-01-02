@@ -86,11 +86,13 @@ public class Squad {
 	 * @param serials   the serial numbers of the agents
 	 * @return ‘false’ if an agent of serialNumber ‘serial’ is missing, and ‘true’ otherwise
 	 */
-	public boolean getAgents(List<String> serials){
+	public boolean getAgents(List<String> serials) throws InterruptedException {
 		for (String serial:serials) {
-			if (agents.get(serial) == null)
+			if (agents.get(serial) == null) {
 				return false;
+			}
 		}
+		semaphore.acquire();
 		for (String serial:serials) {
 			Agent agentToAcquire = agents.get(serial);
 			while (!agentToAcquire.isAvailable()) {
@@ -121,6 +123,7 @@ public class Squad {
 				String agentName = agents.get(serial).getName();
 				agentsNames.add(agentName);
 			}
+			else return null;
 		}
 		return agentsNames;
 	}
