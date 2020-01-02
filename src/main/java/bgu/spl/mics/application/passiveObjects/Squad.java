@@ -29,8 +29,10 @@ public class Squad {
 	 * 						of the squad.
 	 */
 	public void load (Agent[] agents) {
-		this.agents = new HashMap<String, Agent>();
-		for(Agent agent : agents) this.agents.put(agent.getSerialNumber(), agent);
+		synchronized (this){
+			this.agents = new HashMap<String, Agent>();
+			for(Agent agent : agents) this.agents.put(agent.getSerialNumber(), agent);
+		}
 	}
 
 
@@ -52,7 +54,7 @@ public class Squad {
 	public void sendAgents(List<String> serials, int time){
 		Thread t = new Thread("Sleeper");
 		try{
-			Thread.sleep(time);
+			Thread.sleep(time*100);
 		} catch (Exception e){}
 		releaseAgents(serials);
 	}
