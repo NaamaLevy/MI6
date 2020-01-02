@@ -100,7 +100,4 @@ public class Squad {
 		return agentsNames;
 	}
 
-	public Map<String, Agent> getAgentsMap(){
-		return agents;
-	}
 }

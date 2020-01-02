@@ -75,14 +75,18 @@ public class MI6Runner {
 
             counter++;
         }
+        List<String> squadNumbers = new LinkedList<>();
+        for (Agent agent : InputData.getSquad())
+            squadNumbers.add(agent.getSerialNumber());
+
         for( int i = 0; i < mpCount; i++) {
             if(i%2==0) {
-                Moneypenny moneypenny = new Moneypenny(Integer.toString(i), true);
+                Moneypenny moneypenny = new Moneypenny(Integer.toString(i),squadNumbers, true);
                 runnables[counter] = moneypenny;
                 messageBroker.register(moneypenny);
             }
             else{
-                Moneypenny moneypenny = new Moneypenny(Integer.toString(i) ,false);
+                Moneypenny moneypenny = new Moneypenny(Integer.toString(i) ,squadNumbers,false);
                 runnables[counter] = moneypenny;
                 messageBroker.register(moneypenny);
             }

@@ -3,8 +3,11 @@ package bgu.spl.mics.application.subscribers;
 import bgu.spl.mics.Future;
 import bgu.spl.mics.Subscriber;
 import bgu.spl.mics.application.messages.*;
+import bgu.spl.mics.application.passiveObjects.Agent;
 import bgu.spl.mics.application.passiveObjects.Inventory;
 import bgu.spl.mics.application.passiveObjects.Squad;
+
+import java.util.List;
 
 /**
  * Only this type of Subscriber can access the squad.
@@ -15,23 +18,31 @@ import bgu.spl.mics.application.passiveObjects.Squad;
  */
 public class Moneypenny extends Subscriber {
 	int time;
-	Squad squad = Squad.getInstance();
+	Squad squad;
 	boolean agentAvailableHandler;
+	private List<String> squadNumbers;
 
-	public Moneypenny(String name, boolean isEven) {
+	public Moneypenny(String name,List<String> squadNumbers,  boolean isEven) {
 		super(name);
-		this.agentAvailableHandler = isEven;
+		agentAvailableHandler = isEven;
+		squad = Squad.getInstance();
 	}
 
 	@Override
 	protected void initialize() {
 		//subscribe MP to terminate BroadCast
-		subscribeBroadcast(TerminateBroadCast.class, (TerminateBroadCast terBC) -> terminate());
+		subscribeBroadcast(MTerminateBroadCast.class, (MTerminateBroadCast terBC) -> {
+			squad.releaseAgents(squadNumbers);
+			terminate();
+		});
 		//subscribe MP to Tick BroadCast
 		subscribeBroadcast(TickBroadcast.class, (TickBroadcast tick) -> time = tick.getTick());
-
-
-
+		if (agentAvailableHandler){
+			subscribeEvent(ReleaseAgentsEvent.class, (ReleaseAgentsEvent relAg) ->{
+				squad.releaseAgents(relAg.getAgentsNumbers());
+				complete(relAg, null);
+			});
+		}
 
 		//subscribe MP to MissionReceivedEvent
 		if(agentAvailableHandler){
@@ -42,9 +53,6 @@ public class Moneypenny extends Subscriber {
 					agentsAvailableEvent.setAgentsName(squad.getAgentsNames(agentsAvailableEvent.getAgentsNumbers())); //set agentsName field in the event (for the report)
 			});
 		}
-
-
-
 		else {
 			subscribeEvent(AgentsSendToMissionEvent.class, (AgentsSendToMissionEvent agentsSendToMissionEvent) -> {
 						squad.sendAgents(agentsSendToMissionEvent.getAgentsNumbers(), agentsSendToMissionEvent.getDuration()); //sends the agents to the mission
@@ -58,29 +66,5 @@ public class Moneypenny extends Subscriber {
 			});
 
 			}
-
-
-		;
-
-
 		}
-
-
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
