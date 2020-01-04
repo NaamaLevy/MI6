@@ -52,20 +52,17 @@ public class Squad {
 	 */
 	public void releaseAgents(List<String> serials) {
 
-		if (!serials.isEmpty()) {
-			System.out.println("TEST  1");
-			for (String serial : serials) {
-				System.out.println("TEST  2");
-				if (agents.containsKey(serial)) {
-					System.out.println("TEST  3");
-					agents.get(serial).release();
-					System.out.println("TEST  4");
+		if (!(serials == null)) {
+			if (!serials.isEmpty()) {
+				for (String serial : serials) {
+					if (agents.containsKey(serial)) {
 
+						agents.get(serial).release();
+					}
 				}
 			}
 		}
 		semaphore.release();
-
 	}
 
 	/**
