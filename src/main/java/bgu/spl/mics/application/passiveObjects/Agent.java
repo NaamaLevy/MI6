@@ -25,14 +25,14 @@ public class Agent{
 	 * <p>
 	 * @return The serial number of an agent.
 	 */
-	public synchronized String getSerialNumber() {
+	public String getSerialNumber() {
 		return serialNumber;
 	}
 
 	/**
 	 * Sets the name of the agent.
 	 */
-	public synchronized void setName(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -41,7 +41,7 @@ public class Agent{
 	 * <p>
 	 * @return the name of the agent.
 	 */
-	public synchronized String getName() {
+	public String getName() {
 		return name;
 	}
 
@@ -50,21 +50,21 @@ public class Agent{
 	 * <p>
 	 * @return if the agent is available.
 	 */
-	public synchronized boolean isAvailable() {
+	public boolean isAvailable() {
 		return available;
 	}
 
 	/**
 	 * Acquires an agent.
 	 */
-	public synchronized void acquire(){
+	public void acquire(){
 		available = false;
 	}
 
 	/**
 	 * Releases an agent.
 	 */
-	public synchronized void  release(){
+	public void release(){
 		available = true;
 	}
 }
