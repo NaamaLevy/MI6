@@ -82,7 +82,7 @@ public class Inventory {
      */
     public void printToFile(String filename) {
         Gson gson= new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).setPrettyPrinting().create();
-        String InventoryOut = new Gson().toJson(this);
+        String InventoryOut = new Gson().toJson(gadgets);
         try (Writer writer = new FileWriter(filename)) {
             writer.write(InventoryOut);
         }
