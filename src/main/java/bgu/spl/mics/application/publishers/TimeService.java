@@ -41,7 +41,6 @@ public class TimeService extends Publisher {
 				@Override
 				public void run() {
 					if (timeDuration >= currentTime) {
-						System.out.println("TimeService: Current time:" + currentTime );
 						getSimplePublisher().sendBroadcast(new TickBroadcast(currentTime));
 						currentTime++;
 					} else {

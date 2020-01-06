@@ -117,9 +117,8 @@ public class MI6Runner {
                 }
         }
         Diary diary = Diary.getInstance();
+        diary.printToFile("args[1]");
+        inventory.printToFile("args[2]");
 
-
-            diary.printToFile("Diary_Res");
-        inventory.printToFile("Inventory_Res");
     }
 }

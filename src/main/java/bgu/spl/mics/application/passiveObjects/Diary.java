@@ -71,7 +71,6 @@ public class Diary {
 		String diaryOut = new Gson().toJson(this);
 		try (Writer writer = new FileWriter(filename)) {
 			writer.write(diaryOut);
-			System.out.println("PRINTED");
 		}
 		catch (Exception e){
 			e.printStackTrace();
@@ -82,10 +81,8 @@ public class Diary {
 	 * @return the total number of received missions (executed / aborted) be all the M-instances.
 	 */
 	public int getTotal(){ return total;}
-	public void incrementTotal(){
-		System.out.println("AHHHHHHHHHHHHHHHHHHHHHHHH");
+	public synchronized void incrementTotal(){
 		total++;}
-
 }
 
 

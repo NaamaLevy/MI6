@@ -31,7 +31,6 @@ public class Intelligence extends Subscriber {
 	protected void initialize() {
 		//subscribe to terminate BroadCast
 		subscribeBroadcast(TerminateBroadCast.class, (TerminateBroadCast terBC) -> {
-					System.out.println("int terminating");
 					terminate();
 
 		} );
@@ -41,7 +40,6 @@ public class Intelligence extends Subscriber {
 				if (mission.getTimeIssued()==tick.getTick()){
 					MissionReceivedEvent missionReceivedEvent = new MissionReceivedEvent(mission.getMissionName(),mission.getSerialAgentsNumbers(),mission.getGadget(), mission.getTimeExpired(), mission.getDuration(), mission.getTimeIssued());
 					getSimplePublisher().sendEvent(missionReceivedEvent);
-					System.out.println("Intelligence: new mission from int"  + id + " time:" + tick.getTick()+ " " + mission.getMissionName());
 				}
 			}
 		});

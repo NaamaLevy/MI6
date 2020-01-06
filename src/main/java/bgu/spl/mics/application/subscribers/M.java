@@ -27,7 +27,6 @@ public class M extends Subscriber {
 
         //subscribe M to terminate BroadCast
         subscribeBroadcast(TerminateBroadCast.class, (TerminateBroadCast terBC) -> {
-            System.out.println("M terminating");
             getSimplePublisher().sendBroadcast(new MTerminateBroadCast());
             terminate();
 
@@ -37,7 +36,6 @@ public class M extends Subscriber {
         //subscribe M to MissionReceivedEvent
 
         Callback<MissionReceivedEvent> missionReceivedEventCallback = (MissionReceivedEvent meE) ->{
-            System.out.println("M: Mission ---"+meE.getMissionName()+ "--- accepted." + "      time:" + time );
             diary.incrementTotal();
             Report report = new Report();
             //create a report for the mission
@@ -48,13 +46,11 @@ public class M extends Subscriber {
 
             AgentsAvailableEvent agentsAvailableEvent = new AgentsAvailableEvent(meE.getAgentsNumbers());
             Future<Integer> isAgentsAvailableFuture = getSimplePublisher().sendEvent(agentsAvailableEvent);
-            System.out.println("M: Agents are you up for the mission---"+ meE.getMissionName() + "---    time:" + time );
             int agentsAvailable = 0;
             if (isAgentsAvailableFuture != null)
                 agentsAvailable = isAgentsAvailableFuture.get();
             int gadgetAvailable = 0;
             if (isAgentsAvailableFuture != null && agentsAvailable == 1){
-                System.out.println("M: We got the agents" + "       time:" + time );
                 GadgetAvailableEvent gadgetAvailableEvent = (new GadgetAvailableEvent<Integer>(meE.getGadget()));
                 Future<Integer> isGadgetAvailableFuture = getSimplePublisher().sendEvent(gadgetAvailableEvent);
 
@@ -62,7 +58,6 @@ public class M extends Subscriber {
                     gadgetAvailable = isGadgetAvailableFuture.get();
             }
             if ((agentsAvailable==1) && (gadgetAvailable > 0) && (gadgetAvailable <= meE.getExpiredTime())){
-                System.out.println("M: We got the gadget " +meE.getGadget()+ "      time:" + time );
                 AgentsSendToMissionEvent agentsSendToMissionEvent = new AgentsSendToMissionEvent(meE.getAgentsNumbers(),meE.getDuration() );
                 Future SendAgentsFuture = getSimplePublisher().sendEvent(agentsSendToMissionEvent);
 
@@ -74,12 +69,10 @@ public class M extends Subscriber {
                 report.setQTime(meE.getTime());
                 report.setAgentsSerialNumbers(agentsAvailableEvent.getAgentsName());
                 diary.addReport(report); //adds the report to the diary
-                System.out.println("M: Agents out for the mission ---"+ meE.getMissionName() + "---      time:" + time );
             }
             else{
                 ReleaseAgentsEvent releaseAgentsEvent = new ReleaseAgentsEvent(meE.getAgentsNumbers());
                 Future releaseAgents = getSimplePublisher().sendEvent(releaseAgentsEvent);
-                System.out.println("M: Mission has been cancelled ---" + meE.getMissionName() + "---      time:" + time );
             }
         };
 
